@@ -53,7 +53,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Leetcode," />
 
 
 
@@ -69,17 +69,20 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="本渣渣解法首先把root push近stack里，之后只要stack不为空就进入循环。首先定义pre来表示我们之前访问的节点，这个作用是用来判断我们应不应该pop出当前节点。当前节点为stack.peek()获得的节点，如果这个节点之前没有访问过，我们依次push 右子节点和左子节点，这样做是保证左子结点在栈顶(24 - 29行)。如果是叶节点或者是第二次访问的话，就pop()出来，并且加入结果">
+<meta name="keywords" content="Leetcode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/09/24/hello-world/index.html">
+<meta property="og:title" content="145. Binary Tree Postorder Traversal">
+<meta property="og:url" content="http://yoursite.com/2017/09/24/145-Binary-Tree-Postorder-Traversal/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="本渣渣解法首先把root push近stack里，之后只要stack不为空就进入循环。首先定义pre来表示我们之前访问的节点，这个作用是用来判断我们应不应该pop出当前节点。当前节点为stack.peek()获得的节点，如果这个节点之前没有访问过，我们依次push 右子节点和左子节点，这样做是保证左子结点在栈顶(24 - 29行)。如果是叶节点或者是第二次访问的话，就pop()出来，并且加入结果">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-24T08:04:28.000Z">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/005CRBrHgw1fam2tkcgf9j30os08i74o.jpg">
+<meta property="og:updated_time" content="2017-09-24T15:24:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="145. Binary Tree Postorder Traversal">
+<meta name="twitter:description" content="本渣渣解法首先把root push近stack里，之后只要stack不为空就进入循环。首先定义pre来表示我们之前访问的节点，这个作用是用来判断我们应不应该pop出当前节点。当前节点为stack.peek()获得的节点，如果这个节点之前没有访问过，我们依次push 右子节点和左子节点，这样做是保证左子结点在栈顶(24 - 29行)。如果是叶节点或者是第二次访问的话，就pop()出来，并且加入结果">
+<meta name="twitter:image" content="http://ww4.sinaimg.cn/large/005CRBrHgw1fam2tkcgf9j30os08i74o.jpg">
 
 
 
@@ -109,13 +112,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/24/hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/24/145-Binary-Tree-Postorder-Traversal/"/>
 
 
 
 
 
-  <title>Hello World | Hexo</title>
+  <title>145. Binary Tree Postorder Traversal | Hexo</title>
   
 
 
@@ -232,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/145-Binary-Tree-Postorder-Traversal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">145. Binary Tree Postorder Traversal</h1>
         
 
         <div class="post-meta">
@@ -261,7 +264,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-24T16:04:28+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-24T23:23:11+08:00">
                 2017-09-24
               </time>
             
@@ -271,6 +274,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OJ/" itemprop="url" rel="index">
+                    <span itemprop="name">OJ</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -299,16 +324,10 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
+        <p><img src="http://ww4.sinaimg.cn/large/005CRBrHgw1fam2tkcgf9j30os08i74o.jpg" alt="image"></p>
+<h4 id="本渣渣解法"><a href="#本渣渣解法" class="headerlink" title="本渣渣解法"></a>本渣渣解法</h4><p>首先把root push近stack里，之后只要stack不为空就进入循环。首先定义pre来表示我们之前访问的节点，这个作用是用来判断我们应不应该pop出当前节点。当前节点为stack.peek()获得的节点，如果这个节点之前没有访问过，我们依次push 右子节点和左子节点，这样做是保证左子结点在栈顶(24 - 29行)。如果是叶节点或者是第二次访问的话，就pop()出来，并且加入结果集，pre设置为当前节点((20 - 23行))。</p>
+<p>可以看到我们这样模拟省略了第二次访问节点的情况，第二次的情况是由在栈里左右子节点的相对顺序来模拟的，因为先push右子节点然后左子结点，那么首先会遍历左子树然后才遍历右子树。如果没有左子树或者右子树情况，那么就先遍历另外一个有的子树。这样由于子节点在栈里都在parent的上方，所以一定先访问完子节点再会去访问父节点，保证了算法的正确性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Definition for binary tree</span></div><div class="line"><span class="comment"> * public class TreeNode &#123;</span></div><div class="line"><span class="comment"> *     int val;</span></div><div class="line"><span class="comment"> *     TreeNode left;</span></div><div class="line"><span class="comment"> *     TreeNode right;</span></div><div class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></div><div class="line"><span class="comment"> * &#125;</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">postorderTraversal</span><span class="params">(TreeNode root)</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</div><div class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>)</div><div class="line">            <span class="keyword">return</span> res;</div><div class="line">        Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> Stack&lt;TreeNode&gt;();</div><div class="line">        TreeNode pre = <span class="keyword">null</span>;</div><div class="line">        stack.push(root);</div><div class="line">        <span class="keyword">while</span>(!stack.isEmpty()) &#123;</div><div class="line">            TreeNode curr = stack.peek();</div><div class="line">            <span class="keyword">if</span> (isLeaf(curr) || (pre != <span class="keyword">null</span> &amp;&amp; (pre == curr.left || pre == curr.right))) &#123;</div><div class="line">                res.add(stack.pop().val);</div><div class="line">                pre = curr;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">if</span> (curr.right != <span class="keyword">null</span>)</div><div class="line">                    stack.push(curr.right);</div><div class="line">                <span class="keyword">if</span> (curr.left != <span class="keyword">null</span>)</div><div class="line">                    stack.push(curr.left);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isLeaf</span><span class="params">(TreeNode node)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> node.left == <span class="keyword">null</span> &amp;&amp; node.right == <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -323,6 +342,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+          
+        </div>
+      
 
       
       
@@ -332,15 +357,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/09/24/Interesting/" rel="next" title="Interesting">
+                <i class="fa fa-chevron-left"></i> Interesting
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/24/Interesting/" rel="prev" title="Interesting">
-                Interesting <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -473,7 +498,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#本渣渣解法"><span class="nav-number">1.</span> <span class="nav-text">本渣渣解法</span></a></li></ol></div>
             
 
           </div>
