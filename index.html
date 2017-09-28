@@ -229,6 +229,359 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/28/Caffe训练prototxt-的一些Demo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ocean">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="April">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/28/Caffe训练prototxt-的一些Demo/" itemprop="url">Caffe训练prototxt 的一些Demo</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-28T23:00:27+08:00">
+                2017-09-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a>逻辑回归</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-9-28/40239903.jpg?imageView2/0/w/400/h/400" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">name:<span class="string">"logisticregression"</span>  <span class="comment"># 开头先定义网络的名字</span></div><div class="line">layer&#123;</div><div class="line">    name:<span class="string">"mnist"</span></div><div class="line">    type:<span class="string">"Data"</span></div><div class="line">    top:<span class="string">"data"</span></div><div class="line">    top:<span class="string">"label"</span></div><div class="line">    data_param&#123;</div><div class="line">      source:<span class="string">"yoursource"</span></div><div class="line">      batch_size:yoursize</div><div class="line">      &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">    name:<span class="string">"ip"</span></div><div class="line">    type:<span class="string">"InnerProduct"</span></div><div class="line">    bottom:<span class="string">"data"</span></div><div class="line">    top:<span class="string">"ip"</span></div><div class="line">    inner_product_param&#123;</div><div class="line">      num_output:<span class="number">2</span></div><div class="line">      &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">    name:<span class="string">"loss"</span></div><div class="line">    type:<span class="string">"SoftmaxWithLoss"</span></div><div class="line">    bottom:<span class="string">"ip"</span></div><div class="line">    bottom:<span class="string">"label"</span></div><div class="line">    top:<span class="string">"loss"</span>&#125;</div></pre></td></tr></table></figure>
+<h4 id="LeNet"><a href="#LeNet" class="headerlink" title="LeNet"></a>LeNet</h4><p><img src="http://ww1.sinaimg.cn/large/005CRBrHly1fjz2inf19mj30vd0b0wg5.jpg" alt=""><br><img src="http://o7f7k8xtl.bkt.clouddn.com/17-9-28/13007114.jpg?imageView2/0/w/500/h/500" alt=""></p>
+<ul>
+<li>Data layer</li>
+</ul>
+<p>首先是定义网络名字 <code>name: &quot;LeNet&quot;</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">name: <span class="string">"LeNet"</span></div><div class="line"><span class="comment">#==============定义TRAIN的数据层============================================</span></div><div class="line"></div><div class="line">layer&#123;</div><div class="line">    name:<span class="string">"mnist"</span> <span class="comment">#定义该层的名字</span></div><div class="line">    type:<span class="string">"Data"</span><span class="comment">#该层的类型是数据,这里的type还有MemoryData(内存读取)HDF5Dats，</span></div><div class="line">               <span class="comment">#HDF5output，ImageData等</span></div><div class="line">    top:<span class="string">"data"</span> <span class="comment"># 生成一个data blob</span></div><div class="line">    top:<span class="string">"label"</span> <span class="comment"># 生成一个label blob</span></div><div class="line">    include &#123;</div><div class="line">        phase: TRAIN <span class="comment">#说明该层只在TRAIN阶段使用</span></div><div class="line">    &#125;</div><div class="line">    transform_param&#123;</div><div class="line">        scale:<span class="number">0.00390625</span> <span class="comment"># 数据归一化系数，1/256，归一到[0,1)</span></div><div class="line">        &#125;<span class="comment">#预处理如减均值，尺寸变换，随机剪，镜像等</span></div><div class="line">    data_param&#123;</div><div class="line">      source:<span class="string">"E:/MyCode/DL/caffe-master/examples/mnist/mnist_train_lmdb"</span> <span class="comment">#训练数据的路径</span></div><div class="line">      batch_size:<span class="number">64</span> <span class="comment">#批量处理的大小</span></div><div class="line">      backend:LMDB <span class="comment">#默认为使用leveldb</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">#==============定义TEST的数据层============================================</span></div><div class="line">layer &#123; </div><div class="line">    name: <span class="string">"mnist"</span></div><div class="line">    type: <span class="string">"Data"</span></div><div class="line">    top: <span class="string">"data"</span></div><div class="line">    top: <span class="string">"label"</span></div><div class="line">    include &#123;</div><div class="line">        phase: TEST <span class="comment">#说明该层只在TEST阶段使用</span></div><div class="line">    &#125;</div><div class="line">    transform_param &#123;</div><div class="line">        scale: <span class="number">0.00390625</span></div><div class="line">    &#125;</div><div class="line">    data_param &#123;</div><div class="line">        source: <span class="string">"E:/MyCode/DL/caffe-master/examples/mnist/mnist_test_lmdb"</span> <span class="comment">#测试数据的路径</span></div><div class="line">        batch_size: <span class="number">100</span></div><div class="line">        backend: LMDB</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Conv1 Layer</li>
+</ul>
+<p>(batch_size，1，28，28) -&gt; (batch_size，20，24，24)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#==============定义卷积层1=============================</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"conv1"</span>       <span class="comment">#该层的名字conv1，即卷积层1</span></div><div class="line">  type: <span class="string">"Convolution"</span> <span class="comment">#该层的类型是卷积层</span></div><div class="line">  bottom: <span class="string">"data"</span>      <span class="comment">#该层使用的数据是由数据层提供的data blob</span></div><div class="line">  top: <span class="string">"conv1"</span>        <span class="comment">#该层生成的数据是conv1</span></div><div class="line">  param &#123;</div><div class="line">    lr_mult: <span class="number">1</span>        <span class="comment">#weight learning rate(简写为lr)权值的学习率，1表示该值是lenet_solver.prototxt中base_lr: 0.01的1倍</span></div><div class="line">  &#125;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: <span class="number">2</span>        <span class="comment">#bias learning rate偏移值的学习率，2表示该值是lenet_solver.prototxt中base_lr: 0.01的2倍</span></div><div class="line">  &#125;</div><div class="line">  convolution_param &#123;</div><div class="line">    num_output: <span class="number">20</span>    <span class="comment">#产生20个输出通道，即20个过滤器</span></div><div class="line">    kernel_size: <span class="number">5</span>    <span class="comment">#卷积核的大小为5*5</span></div><div class="line">    stride: <span class="number">1</span>         <span class="comment">#卷积核移动的步幅为1</span></div><div class="line">    weight_filler &#123;</div><div class="line">      type: <span class="string">"xavier"</span>  <span class="comment">#xavier算法，根据输入和输出的神经元的个数自动初始化权值比例</span></div><div class="line">    &#125;</div><div class="line">    bias_filler &#123;</div><div class="line">      type: <span class="string">"constant"</span>  <span class="comment">#将偏移值初始化为“稳定”状态，即设为默认值0</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Pool1 Layer</li>
+</ul>
+<p>(batch_size，20，24，24) -&gt; (batch_size，20，12，12)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#==============定义池化层1=============================</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"pool1"</span></div><div class="line">  type: <span class="string">"Pooling"</span></div><div class="line">  bottom: <span class="string">"conv1"</span>     <span class="comment">#该层使用的数据是由conv1层提供的conv1</span></div><div class="line">  top: <span class="string">"pool1"</span>        <span class="comment">#该层生成的数据是pool1</span></div><div class="line">  pooling_param &#123;</div><div class="line">    pool: MAX         <span class="comment">#采用最大值池化</span></div><div class="line">    kernel_size: <span class="number">2</span>    <span class="comment">#池化核大小为2*2</span></div><div class="line">    stride: <span class="number">2</span>         <span class="comment">#池化核移动的步幅为2，即非重叠移动</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Conv2 Layer</li>
+</ul>
+<p>(batch_size，20，12，12) -&gt; (batch_size，50，8，8)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#==============定义卷积层2=============================</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"conv2"</span></div><div class="line">  type: <span class="string">"Convolution"</span></div><div class="line">  bottom: <span class="string">"pool1"</span></div><div class="line">  top: <span class="string">"conv2"</span></div><div class="line">  param &#123;</div><div class="line">    lr_mult: <span class="number">1</span></div><div class="line">  &#125;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: <span class="number">2</span></div><div class="line">  &#125;</div><div class="line">  convolution_param &#123;</div><div class="line">    num_output: <span class="number">50</span></div><div class="line">    kernel_size: <span class="number">5</span></div><div class="line">    stride: <span class="number">1</span></div><div class="line">    weight_filler &#123;</div><div class="line">      type: <span class="string">"xavier"</span></div><div class="line">    &#125;</div><div class="line">    bias_filler &#123;</div><div class="line">      type: <span class="string">"constant"</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Pool2 Layer</li>
+</ul>
+<p>(batch_size，50，8，8) -&gt; (batch_size，50，4，4)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#==============定义池化层2=============================</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"pool2"</span></div><div class="line">  type: <span class="string">"Pooling"</span></div><div class="line">  bottom: <span class="string">"conv2"</span></div><div class="line">  top: <span class="string">"pool2"</span></div><div class="line">  pooling_param &#123;</div><div class="line">    pool: MAX</div><div class="line">    kernel_size: <span class="number">2</span></div><div class="line">    stride: <span class="number">2</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Ip1 Layer</li>
+</ul>
+<p>将C<em>H</em>W转换成1D feature vector，即800-&gt;500.</p>
+<p>(batch_size，50，4，4) -&gt; (batch_size，500)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#==============定义全连接层1=============================</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"ip1"</span></div><div class="line">  type: <span class="string">"InnerProduct"</span> <span class="comment">#该层的类型为全连接层</span></div><div class="line">  bottom: <span class="string">"pool2"</span></div><div class="line">  top: <span class="string">"ip1"</span></div><div class="line">  param &#123;</div><div class="line">    lr_mult: <span class="number">1</span></div><div class="line">  &#125;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: <span class="number">2</span></div><div class="line">  &#125;</div><div class="line">  inner_product_param &#123;</div><div class="line">    num_output: <span class="number">500</span> <span class="comment">#有500个输出通道</span></div><div class="line">    weight_filler &#123;</div><div class="line">      type: <span class="string">"xavier"</span></div><div class="line">    &#125;</div><div class="line">    bias_filler &#123;</div><div class="line">      type: <span class="string">"constant"</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Relu1 Layer</li>
+</ul>
+<p>(batch_size，500) -&gt; (batch_size，500)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#==============定义ReLU1层=============================</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"relu1"</span></div><div class="line">  type: <span class="string">"ReLU"</span></div><div class="line">  bottom: <span class="string">"ip1"</span></div><div class="line">  top: <span class="string">"ip1"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>ReLU是一个元素操作，因此可以使用原地操作（in-place operations）用于节省空间。其实就是top与bottom的名字相同。当然其他的层不能使用重复的blob名称。</p>
+<ul>
+<li>Ip2 Layer</li>
+</ul>
+<p>(batch_size，500) -&gt; (batch_size，10)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#==============定义全连接层2============================</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"ip2"</span></div><div class="line">  type: <span class="string">"InnerProduct"</span></div><div class="line">  bottom: <span class="string">"ip1"</span></div><div class="line">  top: <span class="string">"ip2"</span></div><div class="line">  param &#123;</div><div class="line">    lr_mult: <span class="number">1</span></div><div class="line">  &#125;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: <span class="number">2</span></div><div class="line">  &#125;</div><div class="line">  inner_product_param &#123;</div><div class="line">    num_output: <span class="number">10</span>          <span class="comment">#10个输出数据，对应0-9十个数字</span></div><div class="line">    weight_filler &#123;</div><div class="line">      type: <span class="string">"xavier"</span></div><div class="line">    &#125;</div><div class="line">    bias_filler &#123;</div><div class="line">      type: <span class="string">"constant"</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Loss Layer</li>
+</ul>
+<p>(batch_size，10) -&gt;  (batch_size，10)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#==============定义损失函数层============================</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"loss"</span></div><div class="line">  type: <span class="string">"SoftmaxWithLoss"</span></div><div class="line">  bottom: <span class="string">"ip2"</span></div><div class="line">  bottom: <span class="string">"label"</span></div><div class="line">  top: <span class="string">"loss"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Accuracy准确率层</li>
+</ul>
+<p>这一层是用于在测试中返回准确率使用的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"accuracy"</span></div><div class="line">  type: <span class="string">"Accuracy"</span></div><div class="line">  bottom: <span class="string">"ip2"</span></div><div class="line">  bottom: <span class="string">"label"</span></div><div class="line">  top: <span class="string">"accuracy"</span></div><div class="line">  include &#123;</div><div class="line">    phase: TEST</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>与loss相似，但要注明<code>phase: TEST</code></p>
+<h4 id="Solver"><a href="#Solver" class="headerlink" title="Solver"></a>Solver</h4><p>上面的prototxt主要定义模型，而solver主要定义模型的参数更新与求解方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 制定训练和测试模型</span></div><div class="line">net: <span class="string">"your/prototxt.prototxt"</span></div><div class="line"><span class="comment"># 指定多少测试集参与向前计算，这里的测试batch size=100，所以100次可使用完全部10000张测试集.</span></div><div class="line">test_iter:<span class="number">100</span></div><div class="line"><span class="comment"># 每训练test_interval次迭代进行一次训练.</span></div><div class="line">test_interval： <span class="number">500</span></div><div class="line"><span class="comment"># 基础学习率.</span></div><div class="line">base_lr: <span class="number">0.01</span></div><div class="line"><span class="comment">#动量</span></div><div class="line">momentum: <span class="number">0.9</span></div><div class="line"><span class="comment">#权重衰减</span></div><div class="line">weight_decay: <span class="number">0.0005</span></div><div class="line"><span class="comment"># 学习策略</span></div><div class="line"><span class="comment">#http://stackoverflow.com/questions/30033096/what-is-lr-policy-in-caffe</span></div><div class="line">lr_policy:<span class="string">"inv"</span><span class="comment">#inv: return base_lr * (1 + gamma * iter) ^ (- power)</span></div><div class="line">gamma: <span class="number">0.0001</span></div><div class="line">power: <span class="number">0.75</span></div><div class="line"><span class="comment"># 每隔多少次迭代展现结果</span></div><div class="line">display: <span class="number">100</span></div><div class="line"><span class="comment"># 最大迭代数量</span></div><div class="line">max_iter: <span class="number">10000</span></div><div class="line"><span class="comment"># 每隔多少次迭代保存临时模型</span></div><div class="line">snapshot: <span class="number">5000</span></div><div class="line"><span class="comment">#模型前缀</span></div><div class="line"><span class="comment">#不加前缀为iter_迭代次数.caffemodel</span></div><div class="line"><span class="comment">#加之后为lenet_iter_迭代次数.caffemodel</span></div><div class="line">snapshot_prefix: <span class="string">"examples/minst/lenet"</span></div><div class="line"><span class="comment">#设置求解其类型，CPU or GPU</span></div><div class="line">solver_model：gpu</div></pre></td></tr></table></figure>
+<hr>
+<h6 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h6><p><a href="http://blog.csdn.net/yan_joy/article/details/53083208" target="_blank" rel="external">caffe学习（9）LeNet在Caffe上的使用</a></p>
+<p><a href="http://www.cnblogs.com/xiaopanlyu/p/5793280.html" target="_blank" rel="external">Chapter 4 深入理解Caffe MNIST DEMO中的LeNet网络模型</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/28/Caffe-的一些典型layer及参数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ocean">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="April">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/28/Caffe-的一些典型layer及参数/" itemprop="url">Caffe 的一些典型layer及参数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-28T22:55:53+08:00">
+                2017-09-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Param"><a href="#Param" class="headerlink" title="Param{}"></a>Param{}</h4><p>有的layer里面会有两个param{ }结构,里面是两个参数<code>lr_mult</code>与<code>decay_mult</code>。</p>
+<p>这两个param对应这一层的两个weights学习率乘lr_base(基础学习率)系数，比如CNN就是卷积核参数和bias，FC(IP)就是W矩阵和bias</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># CNN层</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"conv1"</span></div><div class="line">  type: <span class="string">"Convolution"</span></div><div class="line">  bottom: <span class="string">"data"</span></div><div class="line">  top: <span class="string">"conv1"</span></div><div class="line">  <span class="comment"># learning rate and decay multipliers for the filters </span></div><div class="line">  <span class="comment">#对filter学习系数和衰减速率的修改</span></div><div class="line">  param &#123; lr_mult: <span class="number">1</span> decay_mult: <span class="number">1</span> &#125;</div><div class="line">  <span class="comment"># learning rate and decay multipliers for the biases  </span></div><div class="line">  <span class="comment">#对卷积之后偏置量学习系数和衰减速率的修改</span></div><div class="line">  param &#123; lr_mult: <span class="number">2</span> decay_mult: <span class="number">0</span> &#125;</div><div class="line">  convolution_param &#123;</div><div class="line">    num_output: <span class="number">96</span>     <span class="comment"># learn 96 filters</span></div><div class="line">    kernel_size: <span class="number">11</span>    <span class="comment"># each filter is 11x11</span></div><div class="line">    stride: <span class="number">4</span>          <span class="comment"># step 4 pixels between each filter application</span></div><div class="line">    weight_filler &#123;</div><div class="line">      type: <span class="string">"gaussian"</span> <span class="comment"># initialize the filters from a Gaussian</span></div><div class="line">      std: <span class="number">0.01</span>        <span class="comment"># distribution with stdev 0.01 (default mean: 0)</span></div><div class="line">    &#125;</div><div class="line">    bias_filler &#123;</div><div class="line">      type: <span class="string">"constant"</span> <span class="comment"># initialize the biases to zero (0)</span></div><div class="line">      value: <span class="number">0</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># 全连接层</span></div><div class="line">layer &#123; name: <span class="string">"fc1"</span> type: <span class="string">"InnerProduct"</span> bottom: <span class="string">"y_l2"</span> top: <span class="string">"fc"</span></div><div class="line">  param &#123; lr_mult: <span class="number">1</span> decay_mult: <span class="number">1</span> &#125; <span class="comment"># 这是WX+b中W矩阵的学习系数与衰减速率</span></div><div class="line">  param &#123; lr_mult: <span class="number">2</span> decay_mult: <span class="number">2</span> &#125; <span class="comment"># 这是b偏置的学习系数与衰减速率</span></div><div class="line">  inner_product_param &#123; num_output: <span class="number">101</span></div><div class="line">    weight_filler &#123; type: <span class="string">"gaussian"</span> std: <span class="number">0.0001</span> &#125;</div><div class="line">    bias_filler &#123; type: <span class="string">"constant"</span> value: <span class="number">0</span> &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="CNN-Relu-Pooling"><a href="#CNN-Relu-Pooling" class="headerlink" title="CNN - Relu - Pooling"></a>CNN - Relu - Pooling</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">layer &#123;                    </div><div class="line">  name: <span class="string">"conv1"</span>          <span class="comment">#层的名称</span></div><div class="line">  type: <span class="string">"Convolution"</span>    <span class="comment"># 层的类型</span></div><div class="line">  bottom: <span class="string">"data"</span>         <span class="comment">#层的输入（主要是对应上面的data）</span></div><div class="line">  top: <span class="string">"conv1"</span>           <span class="comment">#层的输出（对应的是本层卷积的结果） </span></div><div class="line">  convolution_param &#123;     <span class="comment">#卷积的参数</span></div><div class="line">    num_output: <span class="number">96</span>        <span class="comment">#过滤器的个数  可以看做的是卷积和的个数吧</span></div><div class="line">    kernel_size: <span class="number">11</span>       <span class="comment">#卷积核的大小</span></div><div class="line">    stride: <span class="number">4</span>             <span class="comment">#图像中的间隔多少进行卷积（我认为是一次窗口滑动的步长）</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"relu1"</span>       </div><div class="line">  type: <span class="string">"ReLU"</span></div><div class="line">  bottom: <span class="string">"conv1"</span></div><div class="line">  top: <span class="string">"conv1"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"pool1"</span></div><div class="line">  type: <span class="string">"Pooling"</span></div><div class="line">  bottom: <span class="string">"conv1"</span></div><div class="line">  top: <span class="string">"pool1"</span></div><div class="line">  pooling_param &#123;</div><div class="line">    pool: MAX       <span class="comment">#使用最大池化</span></div><div class="line">    kernel_size: <span class="number">3</span></div><div class="line">    stride: <span class="number">2</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># 一个有pad和group的CNN</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"conv2"</span></div><div class="line">  type: <span class="string">"Convolution"</span></div><div class="line">  bottom: <span class="string">"norm1"</span></div><div class="line">  top: <span class="string">"conv2"</span></div><div class="line">  convolution_param &#123;</div><div class="line">    num_output: <span class="number">256</span></div><div class="line">    pad: <span class="number">2</span>           <span class="comment">#边界处补2个行和2个列</span></div><div class="line">    kernel_size: <span class="number">5</span></div><div class="line">    group: <span class="number">2</span>         <span class="comment">#卷积分组,可以减少网络的参数</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Relu以外其他激活函数的type如下：</p>
+<ul>
+<li>sigmoid : Sigmoid</li>
+<li>tanh : TanH</li>
+<li>绝对值 : AbsVal</li>
+<li>power : Power（The Power layer computes the output as (shift + scale * x) ^ power for each input element x.）</li>
+<li>BNLL : BNLL （The BNLL (binomial normal log likelihood) layer computes the output as log(1 + exp(x)) for each input element x.）</li>
+</ul>
+<h4 id="FC-Relu-Dropout"><a href="#FC-Relu-Dropout" class="headerlink" title="FC - Relu - Dropout"></a>FC - Relu - Dropout</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"fc6"</span></div><div class="line">  type: <span class="string">"InnerProduct"</span></div><div class="line">  bottom: <span class="string">"pool5"</span></div><div class="line">  top: <span class="string">"fc6"</span></div><div class="line">  inner_product_param &#123;</div><div class="line">    num_output: <span class="number">4096</span>       <span class="comment">#过滤器的个数（在此可以看做是输出的个数）</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"relu6"</span></div><div class="line">  type: <span class="string">"ReLU"</span></div><div class="line">  bottom: <span class="string">"fc6"</span></div><div class="line">  top: <span class="string">"fc6"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"drop6"</span></div><div class="line">  type: <span class="string">"Dropout"</span></div><div class="line">  bottom: <span class="string">"fc6"</span></div><div class="line">  top: <span class="string">"fc6"</span></div><div class="line">  dropout_param &#123;</div><div class="line">    dropout_ratio: <span class="number">0.5</span>     <span class="comment">#使用的drop进行网络的参数的隐藏时的参数</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="FC-Softmax-Softmax-Loss"><a href="#FC-Softmax-Softmax-Loss" class="headerlink" title="FC - Softmax/Softmax Loss"></a>FC - Softmax/Softmax Loss</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"fc8"</span></div><div class="line">  type: <span class="string">"InnerProduct"</span>    <span class="comment">#内积（全连接层）</span></div><div class="line">  bottom: <span class="string">"fc7"</span></div><div class="line">  top: <span class="string">"fc8"</span></div><div class="line">  inner_product_param &#123;</div><div class="line">    num_output: <span class="number">1000</span>     <span class="comment">#过滤器的个数</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"loss and prob"</span></div><div class="line">  type: <span class="string">"SoftmaxWithLoss"</span>    <span class="comment">#softmax分类层</span></div><div class="line">  bottom: <span class="string">"fc8"</span></div><div class="line">  bottom: <span class="string">"label"</span></div><div class="line">  top: <span class="string">"loss"</span></div><div class="line">  top: <span class="string">"prob"</span>    <span class="comment"># 归一化后的softmax概率</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Accuracy"><a href="#Accuracy" class="headerlink" title="Accuracy"></a>Accuracy</h4><p>输出分类（预测）精确度，只有test阶段才有，因此需要加入include参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"accuracy"</span></div><div class="line">  type: <span class="string">"Accuracy"</span></div><div class="line">  bottom: <span class="string">"ip2"</span></div><div class="line">  bottom: <span class="string">"label"</span></div><div class="line">  top: <span class="string">"accuracy"</span></div><div class="line">  include &#123;</div><div class="line">    phase: TEST</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="L1-L2-normalization"><a href="#L1-L2-normalization" class="headerlink" title="L1 L2 normalization"></a>L1 L2 normalization</h4><ul>
+<li>交叉熵损失函数 :SigmoidCrossEntropyLoss</li>
+<li>信息增益损失函数:InfogainLoss</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># L1 Norm</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"loss"</span></div><div class="line">  type: <span class="string">"HingeLoss"</span></div><div class="line">  bottom: <span class="string">"pred"</span></div><div class="line">  bottom: <span class="string">"label"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># L2 Norm</span></div><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"loss"</span></div><div class="line">  type: <span class="string">"HingeLoss"</span></div><div class="line">  bottom: <span class="string">"pred"</span></div><div class="line">  bottom: <span class="string">"label"</span></div><div class="line">  top: <span class="string">"loss"</span></div><div class="line">  hinge_loss_param &#123;</div><div class="line">    norm: L2</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="LRN-（CNN-Relu-Pooling-LRN）"><a href="#LRN-（CNN-Relu-Pooling-LRN）" class="headerlink" title="LRN （CNN - Relu - Pooling - LRN）"></a>LRN （CNN - Relu - Pooling - LRN）</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"norm2"</span></div><div class="line">  type: <span class="string">"LRN"</span>      <span class="comment">#Local Response Normalization (LRN) (侧抑制)</span></div><div class="line">  bottom: <span class="string">"pool2"</span></div><div class="line">  top: <span class="string">"norm2"</span></div><div class="line">  lrn_param &#123;      <span class="comment">#主要是LRN的三个主要的参数</span></div><div class="line">    local_size: <span class="number">5</span>  <span class="comment"># 即 每个样本5*1*1进行(通道间)归一化</span></div><div class="line">    alpha: <span class="number">0.0001</span></div><div class="line">    beta: <span class="number">0.75</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>LRN全称为Local Response Normalization，即局部响应归一化层，具体实现在CAFFE_ROOT/src/caffe/layers/lrn_layer.cpp和同一目录下lrn_layer.cu中。</p>
+<p>该层需要参数有：</p>
+<ul>
+<li>norm_region： 选择对相邻通道间归一化还是通道内空间区域归一化，默认为ACROSS_CHANNELS，即通道间归一化；</li>
+<li>local_size：两种表示（1）通道间归一化时表示求和的通道数；（2）通道内归一化时表示求和区间的边长；默认值为5；</li>
+<li>alpha：缩放因子（详细见后面），默认值为1；</li>
+<li>beta：指数项（详细见后面）， 默认值为5；</li>
+</ul>
+<p>局部响应归一化层完成一种“临近抑制”操作，对局部输入区域进行归一化。</p>
+<ul>
+<li>在通道间归一化模式中，局部区域范围在相邻通道间，但没有空间扩展（即尺寸为 local_size x 1 x 1）；</li>
+<li>在通道内归一化模式中，局部区域在空间上扩展，但只针对独立通道进行（即尺寸为 1 x local_size x local_size）；</li>
+</ul>
+<p>计算公式   <img src="http://img.blog.csdn.net/20141219214151464" alt="image"></p>
+<p>(其中n为局部尺寸大小local_size, 新版 Caffe 已经增加参数 k，变为 (k + (alpha / n) ……）)</p>
+<h4 id="Slicing"><a href="#Slicing" class="headerlink" title="Slicing"></a>Slicing</h4><p>把输入按维度进行切片</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">layer &#123;</div><div class="line">  name: <span class="string">"slicer_label"</span></div><div class="line">  type: <span class="string">"Slice"</span></div><div class="line">  bottom: <span class="string">"label"</span></div><div class="line">  <span class="comment">## 假设label的维度是：N x 5 x 1 x 1</span></div><div class="line">  top: <span class="string">"label1"</span></div><div class="line">  top: <span class="string">"label2"</span></div><div class="line">  top: <span class="string">"label3"</span></div><div class="line">  top: <span class="string">"label4"</span></div><div class="line">  slice_param &#123;</div><div class="line">    axis: <span class="number">1</span>                            <span class="comment"># 指定维度，维度应该是从0开始的；</span></div><div class="line">    slice_point: <span class="number">1</span>                 <span class="comment"># 将label[~][:1][~][~]赋给label1</span></div><div class="line">    slice_point: <span class="number">2</span>                 <span class="comment"># 将label[~][1:3][~][~]赋给label2</span></div><div class="line">    slice_point: <span class="number">3</span>                 <span class="comment"># 将label[~][3:4][~][~]赋给label3</span></div><div class="line">    slice_point: <span class="number">4</span>                <span class="comment">#  将label[~][4:][~][~]赋给label3</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Reshape"><a href="#Reshape" class="headerlink" title="Reshape"></a>Reshape</h4><p>在不改变数据的情况下，改变输入的维度。层类型：Reshape</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">layer &#123;</div><div class="line">   name: <span class="string">"reshape"</span></div><div class="line">   type: <span class="string">"Reshape"</span></div><div class="line">   bottom: <span class="string">"input"</span></div><div class="line">   top: <span class="string">"output"</span></div><div class="line">   reshape_param &#123;</div><div class="line">     shape &#123;</div><div class="line">       dim: <span class="number">0</span>  <span class="comment"># copy the dimension from below</span></div><div class="line">       dim: <span class="number">2</span></div><div class="line">       dim: <span class="number">3</span></div><div class="line">       dim: <span class="number">-1</span> <span class="comment"># infer it from the other dimensions</span></div><div class="line">     &#125;</div><div class="line">   &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>有一个可选的参数组shape, 用于指定blob数据的各维的值（blob是一个四维的数据：n<em>c</em>w*h）。</p>
+<ul>
+<li>dim:0  表示维度不变，即输入和输出是相同的维度。</li>
+<li>dim:2 或 dim:3 将原来的维度变成2或3</li>
+<li>dim:-1 表示由系统自动计算维度。数据的总量不变，系统会根据blob数据的其它三维来自动计算当前维的维度值 。</li>
+</ul>
+<p>假设原数据为：64<em>3</em>28<em>28， 表示64张3通道的28</em>28的彩色图片,经过reshape变换：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">reshape_param &#123;</div><div class="line">    shape &#123;</div><div class="line">      dim: <span class="number">0</span> </div><div class="line">      dim: <span class="number">0</span></div><div class="line">      dim: <span class="number">14</span></div><div class="line">      dim: <span class="number">-1</span> </div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>输出数据为：64<em>3</em>14*56</p>
+<hr>
+<h6 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h6><p><a href="http://blog.csdn.net/kkk584520/article/details/42032013" target="_blank" rel="external"> Caffe源码导读（7）：LRN层的实现</a></p>
+<p><a href="http://blog.csdn.net/losteng/article/details/50827606" target="_blank" rel="external"> caffe 的layer的参数说明</a></p>
+<p><a href="http://www.cnblogs.com/yinheyi/p/6070213.html" target="_blank" rel="external">caffe中各层的作用</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/27/CS344-Problem-Set1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -705,7 +1058,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -727,7 +1080,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
