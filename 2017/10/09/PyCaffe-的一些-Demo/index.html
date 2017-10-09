@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Caffe," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="E 1用训练好的模型，来对测试集进行测试，并输出每个样本的分类结果的实现。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152#coding=utf-8        import osimport caffe import numpy as np root=">
+<meta name="keywords" content="Caffe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyCaffe 的一些 Demo">
+<meta property="og:url" content="http://yoursite.com/2017/10/09/PyCaffe-的一些-Demo/index.html">
+<meta property="og:site_name" content="April">
+<meta property="og:description" content="E 1用训练好的模型，来对测试集进行测试，并输出每个样本的分类结果的实现。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152#coding=utf-8        import osimport caffe import numpy as np root=">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-09T14:37:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PyCaffe 的一些 Demo">
+<meta name="twitter:description" content="E 1用训练好的模型，来对测试集进行测试，并输出每个样本的分类结果的实现。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152#coding=utf-8        import osimport caffe import numpy as np root=">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/09/PyCaffe-的一些-Demo/"/>
+
+
+
+
+
+  <title>PyCaffe 的一些 Demo | April</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">April</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/09/PyCaffe-的一些-Demo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ocean">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="April">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PyCaffe 的一些 Demo</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T22:32:27+08:00">
+                2017-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Caffe/" itemprop="url" rel="index">
+                    <span itemprop="name">Caffe</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="E-1"><a href="#E-1" class="headerlink" title="E 1"></a>E 1</h3><p>用训练好的模型，来对测试集进行测试，并输出每个样本的分类结果的实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding=utf-8 </span></div><div class="line">       </div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> caffe </div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </div><div class="line">root=<span class="string">'/home/liuyun/caffe/'</span>   <span class="comment">#根目录 </span></div><div class="line">deploy=root + <span class="string">'examples/DR_grade/deploy.prototxt'</span>    <span class="comment">#deploy文件 </span></div><div class="line">caffe_model=root + <span class="string">'models/DR/model1/DRnet_iter_40000.caffemodel'</span>  <span class="comment">#训练好的 caffemodel </span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="keyword">import</span> os</div><div class="line">dir = root+<span class="string">'examples/DR_grade/test_512/'</span></div><div class="line">filelist=[]</div><div class="line">filenames = os.listdir(dir)</div><div class="line"><span class="keyword">for</span> fn <span class="keyword">in</span> filenames:</div><div class="line">   fullfilename = os.path.join(dir,fn)</div><div class="line">   filelist.append(fullfilename)</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># img=root+'data/DRIVE/test/60337.jpg'   #随机找的一张待测图片 </span></div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">Test</span><span class="params">(img)</span>:</span></div><div class="line">      </div><div class="line">    net = caffe.Net(deploy,caffe_model,caffe.TEST)   <span class="comment">#加载model和network </span></div><div class="line">       </div><div class="line">    <span class="comment">#图片预处理设置 </span></div><div class="line">    transformer = caffe.io.Transformer(&#123;<span class="string">'data'</span>: net.blobs[<span class="string">'data'</span>].data.shape&#125;)  <span class="comment">#设定图片的shape格式(1,3,28,28) </span></div><div class="line">    transformer.set_transpose(<span class="string">'data'</span>, (<span class="number">2</span>,<span class="number">0</span>,<span class="number">1</span>))    <span class="comment">#改变维度的顺序，由原始图片(28,28,3)变为(3,28,28) </span></div><div class="line">    <span class="comment">#transformer.set_mean('data', np.load(mean_file).mean(1).mean(1))    #减去均值，前面训练模型时没有减均值，这儿就不用 </span></div><div class="line">    transformer.set_raw_scale(<span class="string">'data'</span>, <span class="number">255</span>)    <span class="comment"># 缩放到【0，255】之间 </span></div><div class="line">    transformer.set_channel_swap(<span class="string">'data'</span>, (<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>))   <span class="comment">#交换通道，将图片由RGB变为BGR </span></div><div class="line">       </div><div class="line">    im=caffe.io.load_image(img)                   <span class="comment">#加载图片 </span></div><div class="line">    net.blobs[<span class="string">'data'</span>].data[...] = transformer.preprocess(<span class="string">'data'</span>,im)      <span class="comment">#执行上面设置的图片预处理操作，并将图片载入到blob中 </span></div><div class="line">       </div><div class="line">    <span class="comment">#执行测试 </span></div><div class="line">    out = net.forward() </div><div class="line">       </div><div class="line">    labels = np.loadtxt(labels_filename, str, delimiter=<span class="string">'\t'</span>)   <span class="comment">#读取类别名称文件 </span></div><div class="line">    prob= net.blobs[<span class="string">'prob'</span>].data[<span class="number">0</span>].flatten() <span class="comment">#取出最后一层（prob）属于某个类别的概率值，并打印,'prob'为最后一层的名称</span></div><div class="line">    <span class="keyword">print</span> prob </div><div class="line">    order=prob.argsort()[<span class="number">4</span>]  <span class="comment">#将概率值排序，取出最大值所在的序号 ,9指的是分为0-9十类 </span></div><div class="line">    <span class="comment">#argsort()函数是从小到大排列 </span></div><div class="line">    <span class="keyword">print</span> <span class="string">'the class is:'</span>,labels[order]   <span class="comment">#将该序号转换成对应的类别名称，并打印 </span></div><div class="line">    f=file(<span class="string">"/home/liuyun/caffe/examples/DR_grade/label.txt"</span>,<span class="string">"a+"</span>)</div><div class="line">    f.writelines(img+<span class="string">' '</span>+labels[order]+<span class="string">'\n'</span>)</div><div class="line"> </div><div class="line">labels_filename = root +<span class="string">'examples/DR_grade/DR.txt'</span>    <span class="comment">#类别名称文件，将数字标签转换回类别名称 </span></div><div class="line"> </div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(filelist)):</div><div class="line">    img= filelist[i]</div><div class="line">    Test(img)</div></pre></td></tr></table></figure>
+<h3 id="E-2"><a href="#E-2" class="headerlink" title="E 2"></a>E 2</h3><p>分类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> caffe</div><div class="line"></div><div class="line"><span class="comment"># caffemodel文件</span></div><div class="line">MODEL_FILE = <span class="string">'model/_iter_10000.caffemodel'</span></div><div class="line"><span class="comment"># deploy文件，参考/caffe/models/bvlc_alexnet/deploy.prototxt</span></div><div class="line">DEPLOY_FILE = <span class="string">'deploy.prototxt'</span></div><div class="line"><span class="comment"># 测试图片存放文件夹</span></div><div class="line">TEST_ROOT = <span class="string">'datas/'</span></div><div class="line"></div><div class="line">caffe.set_mode_gpu()</div><div class="line">net = caffe.Net(DEPLOY_FILE, MODEL_FILE, caffe.TEST)</div><div class="line"></div><div class="line"><span class="comment"># 'data'对应于deploy文件：</span></div><div class="line"><span class="comment"># input: "data"</span></div><div class="line"><span class="comment"># input_dim: 1</span></div><div class="line"><span class="comment"># input_dim: 3</span></div><div class="line"><span class="comment"># input_dim: 32</span></div><div class="line"><span class="comment"># input_dim: 96</span></div><div class="line">transformer = caffe.io.Transformer(&#123;<span class="string">'data'</span>: net.blobs[<span class="string">'data'</span>].data.shape&#125;)</div><div class="line"><span class="comment"># python读取的图片文件格式为H×W×K，需转化为K×H×W</span></div><div class="line">transformer.set_transpose(<span class="string">'data'</span>, (<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>))</div><div class="line"><span class="comment"># python中将图片存储为[0, 1]，而caffe中将图片存储为[0, 255]，</span></div><div class="line"><span class="comment"># 所以需要一个转换</span></div><div class="line">transformer.set_raw_scale(<span class="string">'data'</span>, <span class="number">255</span>)</div><div class="line"><span class="comment"># caffe中图片是BGR格式，而原始格式是RGB，所以要转化</span></div><div class="line">transformer.set_channel_swap(<span class="string">'data'</span>, (<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>))</div><div class="line"><span class="comment"># 将输入图片格式转化为合适格式（与deploy文件相同）</span></div><div class="line">net.blobs[<span class="string">'data'</span>].reshape(<span class="number">1</span>, <span class="number">3</span>, <span class="number">32</span>, <span class="number">96</span>)</div><div class="line"></div><div class="line"><span class="comment"># 详见/caffe/python/caffe/io.py</span></div><div class="line">img = caffe.io.load_image(<span class="string">'temp.jpg'</span>)</div><div class="line"><span class="comment"># 读取的图片文件格式为H×W×K，需转化</span></div><div class="line"></div><div class="line"><span class="comment"># 数据输入、预处理</span></div><div class="line">net.blobs[<span class="string">'data'</span>].data[...] = transformer.preprocess(<span class="string">'data'</span>, img)</div><div class="line"><span class="comment"># 前向迭代，即分类</span></div><div class="line">out = net.forward()</div><div class="line"><span class="comment"># 输出结果为各个可能分类的概率分布</span></div><div class="line">pridects = out[<span class="string">'prob'</span>]</div><div class="line"><span class="comment"># 上述'prob'来源于deploy文件：</span></div><div class="line"><span class="comment"># layer &#123;</span></div><div class="line"><span class="comment">#   name: "prob"</span></div><div class="line"><span class="comment">#   type: "Softmax"</span></div><div class="line"><span class="comment">#   bottom: "ip2"</span></div><div class="line"><span class="comment">#   top: "prob"</span></div><div class="line"><span class="comment"># &#125;</span></div><div class="line"></div><div class="line">pridect = pridects.argmax()</div></pre></td></tr></table></figure>
+<h3 id="E-3"><a href="#E-3" class="headerlink" title="E 3"></a>E 3</h3><p>手动裁剪图片</p>
+<p>在caffe中，如果定义了crop_size，那么在train时会对大于crop_size的图片进行随机裁剪，而在test时只是截取中间部分（详见/caffe/src/caffe/data_transformer.cpp）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"> // We only do random crop when we do training.</div><div class="line">  if (phase_ == TRAIN) &#123;</div><div class="line">    h_off = Rand(datum_height - crop_size + 1);</div><div class="line">    w_off = Rand(datum_width - crop_size + 1);</div><div class="line">  &#125; else &#123;</div><div class="line">    h_off = (datum_height - crop_size) / 2;</div><div class="line">    w_off = (datum_width - crop_size) / 2;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在pycaffe利用caffemodel进行分类时，我们使用的是caffe.TEST模式，如果我们输入的图片尺寸大于crop_size，那么图片会被裁剪，但是测试的只是图片中间部分的信息。</p>
+<p>我们可以手动将图片裁剪并导入pycaffe中，这样能够提高识别率（pycaffe利用caffemodel进行分类中：进行分类这一步改为如下）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 记录分类概率分布</span></div><div class="line">pridects = np.zeros((<span class="number">1</span>, CLASS_NUM))</div><div class="line"></div><div class="line"><span class="comment"># 图片维度（高、宽）</span></div><div class="line">img_shape = np.array(img.shape)</div><div class="line"><span class="comment"># 裁剪的大小（高、宽）</span></div><div class="line">crop_dims = (<span class="number">32</span>, <span class="number">96</span>)</div><div class="line">crop_dims = np.array(crop_dims)</div><div class="line"><span class="comment"># 这里使用的图片高度全部固定为32，长度可变，最小为96</span></div><div class="line"><span class="comment"># 裁剪起点为0，终点为w_range</span></div><div class="line">w_range = img_shape[<span class="number">1</span>] - crop_dims[<span class="number">1</span>]</div><div class="line"><span class="comment"># 从左往右剪一遍，再从右往左剪一遍，步长为96/4=24</span></div><div class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, w_range + <span class="number">1</span>, crop_dims[<span class="number">1</span>] / <span class="number">4</span>) + range(w_range, <span class="number">1</span>, -crop_dims[<span class="number">1</span>] / <span class="number">4</span>):</div><div class="line">    <span class="comment"># 裁剪图片</span></div><div class="line">    crop_img = img[:, k:k + crop_dims[<span class="number">1</span>], :]</div><div class="line">    <span class="comment"># 数据输入、预处理</span></div><div class="line">    net.blobs[<span class="string">'data'</span>].data[...] = transformer.preprocess(<span class="string">'data'</span>, crop_img)</div><div class="line">    <span class="comment"># 前向迭代，即分类</span></div><div class="line">    out = net.forward()</div><div class="line">    <span class="comment"># 每一次分类，概率分布叠加</span></div><div class="line">    pridects += out[<span class="string">'prob'</span>]</div><div class="line"></div><div class="line"><span class="comment"># 取最大的概率分布为最终结果</span></div><div class="line">pridect = pridects.argmax()</div></pre></td></tr></table></figure>
+<p>caffe中提供了过采样的方法（oversample），详见/caffe/python/caffe/io.py，裁剪的是图片中央、4个角以及镜像共10张图片。</p>
+<h3 id="E-4"><a href="#E-4" class="headerlink" title="E 4"></a>E 4</h3><p>利用pycaffe包装好的classifier.py来进行分类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> caffe</div><div class="line"></div><div class="line"><span class="comment"># caffemodel文件</span></div><div class="line">MODEL_FILE = <span class="string">'model/_iter_10000.caffemodel'</span></div><div class="line"><span class="comment"># deploy文件，参考/caffe/models/bvlc_alexnet/deploy.prototxt</span></div><div class="line">DEPLOY_FILE = <span class="string">'deploy.prototxt'</span></div><div class="line"><span class="comment"># 测试图片存放文件夹</span></div><div class="line">TEST_ROOT = <span class="string">'datas/'</span></div><div class="line"></div><div class="line">caffe.set_mode_gpu()</div><div class="line"></div><div class="line">net = caffe.Classifier(MODEL_FILE, PRETRAIN_FILE,</div><div class="line">                       raw_scale=<span class="number">255</span>, channel_swap=(<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>))</div><div class="line"></div><div class="line"><span class="comment"># 详见/caffe/python/caffe/io.py</span></div><div class="line">img = caffe.io.load_image(<span class="string">'temp.jpg'</span>)</div><div class="line"><span class="comment"># 读取的图片文件格式为H×W×K，需转化</span></div><div class="line"></div><div class="line"><span class="comment"># 需注意第一个参数为数组</span></div><div class="line"><span class="comment"># 默认采用过采样（详见**/caffe/python/caffe/io.py**），这里取消</span></div><div class="line">out = net.predict([img], oversample=<span class="keyword">False</span>)</div><div class="line"><span class="comment"># 输出结果为各个可能分类的概率分布</span></div><div class="line"></div><div class="line">pridect = out.argmax()</div></pre></td></tr></table></figure>
+<h3 id="E-5"><a href="#E-5" class="headerlink" title="E 5"></a>E 5</h3><p>预测及其特征可视化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding=utf-8</span></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> cv2</div><div class="line"><span class="keyword">import</span> shutil</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="comment">#因为RGB和BGR需要调换一下才能显示</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">showimage</span><span class="params">(im)</span>:</span></div><div class="line">	<span class="keyword">if</span> im.ndim == <span class="number">3</span>:</div><div class="line">		im = im[:, :, ::<span class="number">-1</span>]</div><div class="line">	plt.set_cmap(<span class="string">'jet'</span>)</div><div class="line">	plt.imshow(im)</div><div class="line">	plt.show()</div><div class="line"></div><div class="line"><span class="comment">#特征可视化显示，padval用于调整亮度</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">vis_square</span><span class="params">(data, padsize=<span class="number">1</span>, padval=<span class="number">0</span>)</span>:</span></div><div class="line">	data -= data.min()</div><div class="line">	data /= data.max()</div><div class="line"></div><div class="line">	<span class="comment">#因为我们要把某一层的特征图都显示到一个figure上，因此需要计算每个图片占用figure多少比例，以及绘制的位置</span></div><div class="line">	n = int(np.ceil(np.sqrt(data.shape[<span class="number">0</span>])))</div><div class="line">	<span class="comment"># padding是每个维度扩充的数量</span></div><div class="line">	padding = ((<span class="number">0</span>, n ** <span class="number">2</span> - data.shape[<span class="number">0</span>]), (<span class="number">0</span>, padsize), (<span class="number">0</span>, padsize)) + ((<span class="number">0</span>, <span class="number">0</span>),) * (data.ndim - <span class="number">3</span>)</div><div class="line">	data = np.pad(data, padding, mode=<span class="string">'constant'</span>, constant_values=(padval, padval))</div><div class="line">	<span class="comment"># pad with zero (black)这里该为了黑色，可以更容易看出最后一列中拓展的样子</span></div><div class="line"></div><div class="line">	<span class="comment"># tile the filters into an image</span></div><div class="line">	data = data.reshape((n, n) + data.shape[<span class="number">1</span>:]).transpose((<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>) + tuple(range(<span class="number">4</span>, data.ndim + <span class="number">1</span>)))</div><div class="line">	data = data.reshape((n * data.shape[<span class="number">1</span>], n * data.shape[<span class="number">3</span>]) + data.shape[<span class="number">4</span>:])</div><div class="line"></div><div class="line">	showimage(data)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#设置caffe源码所在的路径</span></div><div class="line">caffe_root = <span class="string">'../../../caffe/'</span></div><div class="line"><span class="keyword">import</span> sys</div><div class="line">sys.path.insert(<span class="number">0</span>, caffe_root + <span class="string">'python'</span>)</div><div class="line"><span class="keyword">import</span> caffe</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#加载均值文件</span></div><div class="line">mean_filename=<span class="string">'./imagenet_mean.binaryproto'</span></div><div class="line">proto_data = open(mean_filename, <span class="string">"rb"</span>).read()</div><div class="line">a = caffe.io.caffe_pb2.BlobProto.FromString(proto_data)</div><div class="line">mean  = caffe.io.blobproto_to_array(a)[<span class="number">0</span>]</div><div class="line"></div><div class="line"><span class="comment">#创建网络，并加载已经训练好的模型文件</span></div><div class="line">gender_net_pretrained=<span class="string">'./caffenet_train_iter_1500.caffemodel'</span></div><div class="line">gender_net_model_file=<span class="string">'./deploy_gender.prototxt'</span></div><div class="line">gender_net = caffe.Classifier(gender_net_model_file, gender_net_pretrained,mean=mean,</div><div class="line">					   channel_swap=(<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>),<span class="comment">#RGB通道与BGR</span></div><div class="line">					   raw_scale=<span class="number">255</span>,<span class="comment">#把图片归一化到0~1之间</span></div><div class="line">					   image_dims=(<span class="number">256</span>, <span class="number">256</span>))<span class="comment">#设置输入图片的大小</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#预测分类及其可特征视化</span></div><div class="line">gender_list=[<span class="string">'Male'</span>,<span class="string">'Female'</span>]</div><div class="line">input_image = caffe.io.load_image(<span class="string">'1.jpg'</span>)<span class="comment">#读取图片</span></div><div class="line"></div><div class="line">prediction_gender=gender_net.predict([input_image])<span class="comment">#预测图片性别</span></div><div class="line"><span class="comment">#打印我们训练每一层的参数形状</span></div><div class="line"><span class="keyword">print</span> <span class="string">'params:'</span></div><div class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> gender_net.params.items():</div><div class="line">	<span class="keyword">print</span> <span class="string">'weight:'</span></div><div class="line">	<span class="keyword">print</span> (k, v[<span class="number">0</span>].data.shape)<span class="comment">#在每一层的参数blob中，caffe用vector存储了两个blob变量，用v[0]表示weight</span></div><div class="line">	<span class="keyword">print</span> <span class="string">'b:'</span></div><div class="line">	<span class="keyword">print</span> (k, v[<span class="number">1</span>].data.shape)<span class="comment">#用v[1]表示偏置参数</span></div><div class="line"><span class="comment">#conv1滤波器可视化</span></div><div class="line">filters = gender_net.params[<span class="string">'conv1'</span>][<span class="number">0</span>].data</div><div class="line">vis_square(filters.transpose(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>))</div><div class="line"><span class="comment">#conv2滤波器可视化</span></div><div class="line"><span class="string">'''filters = gender_net.params['conv2'][0].data</span></div><div class="line"><span class="string">vis_square(filters[:48].reshape(48**2, 5, 5))'''</span></div><div class="line"><span class="comment">#特征图</span></div><div class="line"><span class="keyword">print</span> <span class="string">'feature maps:'</span></div><div class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> gender_net.blobs.items():</div><div class="line">	<span class="keyword">print</span> (k, v.data.shape);</div><div class="line">	feat = gender_net.blobs[k].data[<span class="number">0</span>,<span class="number">0</span>:<span class="number">4</span>]<span class="comment">#显示名字为k的网络层,第一张图片所生成的4张feature maps</span></div><div class="line">	vis_square(feat, padval=<span class="number">1</span>)</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#显示原图片，以及分类预测结果</span></div><div class="line">str_gender=gender_list[prediction_gender[<span class="number">0</span>].argmax()]</div><div class="line"><span class="keyword">print</span> str_gender</div><div class="line"></div><div class="line">plt.imshow(input_image)</div><div class="line">plt.title(str_gender)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<hr>
+<h6 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h6><p><a href="http://blog.csdn.net/u011762313/article/details/48342495" target="_blank" rel="external">Caffe学习：pycaffe利用caffemodel进行分类</a></p>
+<p><a href="http://blog.csdn.net/u011762313/article/details/48343799" target="_blank" rel="external">pycaffe利用caffemodel进行分类=&gt;裁剪图片</a></p>
+<p><a href="http://blog.csdn.net/hjimce/article/details/48933813" target="_blank" rel="external"> 深度学习（六）caffe入门学习</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Caffe/" rel="tag"># Caffe</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/28/Caffe训练prototxt-的一些Demo/" rel="next" title="Caffe训练prototxt 的一些Demo">
+                <i class="fa fa-chevron-left"></i> Caffe训练prototxt 的一些Demo
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">Ocean</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#E-1"><span class="nav-number">1.</span> <span class="nav-text">E 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#E-2"><span class="nav-number">2.</span> <span class="nav-text">E 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#E-3"><span class="nav-number">3.</span> <span class="nav-text">E 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#E-4"><span class="nav-number">4.</span> <span class="nav-text">E 4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#E-5"><span class="nav-number">5.</span> <span class="nav-text">E 5</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#参考资料"><span class="nav-number">5.0.0.1.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ocean</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
