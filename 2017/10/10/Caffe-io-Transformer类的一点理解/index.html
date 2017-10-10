@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Caffe," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="有两种最常见的初始化Transformer的方法，第二种根据net输入层shape才能真正体现tansformer的意义第一种可以理解为我们自己知道net输入层shape后，手动把这个值填上去。 12transformer = caffe.io.Transformer(&amp;#123;&apos;data&apos;:(1,3,256,340)&amp;#125;) transformer = caffe.io.Transfor">
+<meta name="keywords" content="Caffe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Caffe io Transformer类的一点理解">
+<meta property="og:url" content="http://yoursite.com/2017/10/10/Caffe-io-Transformer类的一点理解/index.html">
+<meta property="og:site_name" content="April">
+<meta property="og:description" content="有两种最常见的初始化Transformer的方法，第二种根据net输入层shape才能真正体现tansformer的意义第一种可以理解为我们自己知道net输入层shape后，手动把这个值填上去。 12transformer = caffe.io.Transformer(&amp;#123;&apos;data&apos;:(1,3,256,340)&amp;#125;) transformer = caffe.io.Transfor">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-10T15:09:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Caffe io Transformer类的一点理解">
+<meta name="twitter:description" content="有两种最常见的初始化Transformer的方法，第二种根据net输入层shape才能真正体现tansformer的意义第一种可以理解为我们自己知道net输入层shape后，手动把这个值填上去。 12transformer = caffe.io.Transformer(&amp;#123;&apos;data&apos;:(1,3,256,340)&amp;#125;) transformer = caffe.io.Transfor">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/10/Caffe-io-Transformer类的一点理解/"/>
+
+
+
+
+
+  <title>Caffe io Transformer类的一点理解 | April</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">April</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/10/Caffe-io-Transformer类的一点理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ocean">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="April">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Caffe io Transformer类的一点理解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T23:04:55+08:00">
+                2017-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Caffe/" itemprop="url" rel="index">
+                    <span itemprop="name">Caffe</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>有两种最常见的初始化Transformer的方法，第二种根据net输入层shape才能真正体现tansformer的意义<br>第一种可以理解为我们自己知道net输入层shape后，手动把这个值填上去。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">transformer = caffe.io.Transformer(&#123;<span class="string">'data'</span>:(<span class="number">1</span>,<span class="number">3</span>,<span class="number">256</span>,<span class="number">340</span>)&#125;) </div><div class="line">transformer = caffe.io.Transformer(&#123;<span class="string">'data'</span>: net.blobs[<span class="string">'data'</span>].data.shape&#125;)</div></pre></td></tr></table></figure>
+<p>设定的是一个 4维向量，而处理是输入的图像是单个3维的<br>注意是必须单个，不能一次性输入batch size个进行transform</p>
+<p>而问题来了，实际上整个transformer 的 preprocess 过程只用到了4维里面的后3维（合法性检测，resize等），那为什么初始化<br>transformer的时候输入的是一个4维呢？</p>
+<p>这时候，我们就该回去想，这个Transformer是干什么的？</p>
+<p>没错，Pre-processing，将输入图片预处理成<br>deploy net 输入层可以接受的shape。所以第一步就是要知道输入层需要什么样的shape，因此初始化的时候<br>caffe.io.Transformer({‘data’:(1,3,256,340)})，这个(1,3,256,340)就必须是对应与deploy net<br>输入层的shape.而在deploy net的prototxt中shape往往都是写成4个dims的形式，从而是4维的。</p>
+<p>所以，虽然transformer只要用到这4维中的后3维，但它没必要单独取3维读，还不如全读，用的时候用3维就好了。</p>
+<h4 id="Caffe-io-Transformer"><a href="#Caffe-io-Transformer" class="headerlink" title="Caffe.io.Transformer"></a>Caffe.io.Transformer</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div></pre></td><td class="code"><pre><div class="line"><span class="comment">## Pre-processing</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Transformer</span>:</span></div><div class="line"><span class="string">"""</span></div><div class="line"><span class="string">Transform input for feeding into a Net.</span></div><div class="line"><span class="string">Note: this is mostly for illustrative purposes and it is likely better</span></div><div class="line"><span class="string">to define your own input preprocessing routine for your needs.</span></div><div class="line"><span class="string">Parameters</span></div><div class="line"><span class="string">----------</span></div><div class="line"><span class="string">net : a Net for which the input should be prepared</span></div><div class="line"><span class="string">"""</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, inputs)</span>:</span></div><div class="line">    self.inputs = inputs <span class="comment">#  inputs存的是一个name和shape的字典，比如 &#123;'data':(1,3,256,340)&#125;</span></div><div class="line">    self.transpose = &#123;&#125;  <span class="comment"># Transformer中的这些参数全部是字典dict</span></div><div class="line">    self.channel_swap = &#123;&#125;</div><div class="line">    self.raw_scale = &#123;&#125;</div><div class="line">    self.mean = &#123;&#125;</div><div class="line">    self.input_scale = &#123;&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">__check_input</span><span class="params">(self, in_)</span>:</span></div><div class="line">    <span class="keyword">if</span> in_ <span class="keyword">not</span> <span class="keyword">in</span> self.inputs:</div><div class="line">        <span class="keyword">raise</span> Exception(<span class="string">'&#123;&#125; is not one of the net inputs: &#123;&#125;'</span>.format(</div><div class="line">            in_, self.inputs))</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">preprocess</span><span class="params">(self, in_, data)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line"><span class="string">    Format input for Caffe:</span></div><div class="line"><span class="string">    - convert to single</span></div><div class="line"><span class="string">    - resize to input dimensions (preserving number of channels)</span></div><div class="line"><span class="string">    - transpose dimensions to K x H x W</span></div><div class="line"><span class="string">    - reorder channels (for instance color to BGR)</span></div><div class="line"><span class="string">    - scale raw input (e.g. from [0, 1] to [0, 255] for ImageNet models)</span></div><div class="line"><span class="string">    - subtract mean</span></div><div class="line"><span class="string">    - scale feature</span></div><div class="line"><span class="string">    Parameters</span></div><div class="line"><span class="string">    ----------</span></div><div class="line"><span class="string">    in_ : name of input blob to preprocess for</span></div><div class="line"><span class="string">    data : (H' x W' x K) ndarray  ！！！！输入data必须是单个image，后面有限制</span></div><div class="line"><span class="string">    Returns</span></div><div class="line"><span class="string">    -------</span></div><div class="line"><span class="string">    caffe_in : (K x H x W) ndarray for input to a Net</span></div><div class="line"><span class="string">    """</span></div><div class="line">    self.__check_input(in_)</div><div class="line">    caffe_in = data.astype(np.float32, copy=<span class="keyword">False</span>)</div><div class="line">    transpose = self.transpose.get(in_)</div><div class="line">    channel_swap = self.channel_swap.get(in_)</div><div class="line">    raw_scale = self.raw_scale.get(in_)</div><div class="line">    mean = self.mean.get(in_)</div><div class="line">    input_scale = self.input_scale.get(in_)</div><div class="line">    in_dims = self.inputs[in_][<span class="number">2</span>:] <span class="comment"># in_dims即inputs设定的shape的(H,W)</span></div><div class="line">    <span class="comment"># 检查输入data的(H,W)是否与in_dims一样,注意这里[:2]限制了输入data只能是单个iamge</span></div><div class="line">    <span class="keyword">if</span> caffe_in.shape[:<span class="number">2</span>] != in_dims: </div><div class="line">        caffe_in = resize_image(caffe_in, in_dims)</div><div class="line">    <span class="keyword">if</span> transpose <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        caffe_in = caffe_in.transpose(transpose)</div><div class="line">    <span class="keyword">if</span> channel_swap <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:  <span class="comment"># 如果没有transpose第一维不是通道，这里会报错吧。。。</span></div><div class="line">        caffe_in = caffe_in[channel_swap, :, :]</div><div class="line">    <span class="keyword">if</span> raw_scale <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        caffe_in *= raw_scale</div><div class="line">    <span class="keyword">if</span> mean <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        caffe_in -= mean</div><div class="line">    <span class="keyword">if</span> input_scale <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        caffe_in *= input_scale</div><div class="line">    <span class="keyword">return</span> caffe_in</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">deprocess</span><span class="params">(self, in_, data)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line"><span class="string">    Invert Caffe formatting; see preprocess().</span></div><div class="line"><span class="string">    """</span></div><div class="line">    self.__check_input(in_)</div><div class="line">    decaf_in = data.copy().squeeze()</div><div class="line">    transpose = self.transpose.get(in_)</div><div class="line">    channel_swap = self.channel_swap.get(in_)</div><div class="line">    raw_scale = self.raw_scale.get(in_)</div><div class="line">    mean = self.mean.get(in_)</div><div class="line">    input_scale = self.input_scale.get(in_)</div><div class="line">    <span class="keyword">if</span> input_scale <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        decaf_in /= input_scale</div><div class="line">    <span class="keyword">if</span> mean <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        decaf_in += mean</div><div class="line">    <span class="keyword">if</span> raw_scale <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        decaf_in /= raw_scale</div><div class="line">    <span class="keyword">if</span> channel_swap <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        decaf_in = decaf_in[np.argsort(channel_swap), :, :]</div><div class="line">    <span class="keyword">if</span> transpose <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        decaf_in = decaf_in.transpose(np.argsort(transpose))</div><div class="line">    <span class="keyword">return</span> decaf_in</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_transpose</span><span class="params">(self, in_, order)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line"><span class="string">    Set the input channel order for e.g. RGB to BGR conversion</span></div><div class="line"><span class="string">    as needed for the reference ImageNet model.</span></div><div class="line"><span class="string">    Parameters</span></div><div class="line"><span class="string">    ----------</span></div><div class="line"><span class="string">    in_ : which input to assign this channel order</span></div><div class="line"><span class="string">    order : the order to transpose the dimensions</span></div><div class="line"><span class="string">    """</span></div><div class="line">    self.__check_input(in_)</div><div class="line">    <span class="keyword">if</span> len(order) != len(self.inputs[in_]) - <span class="number">1</span>:  <span class="comment">#注意，这里只比较设定shape的后3维</span></div><div class="line">        <span class="keyword">raise</span> Exception(<span class="string">'Transpose order needs to have the same number of '</span></div><div class="line">                        <span class="string">'dimensions as the input.'</span>)</div><div class="line">    self.transpose[in_] = order</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_channel_swap</span><span class="params">(self, in_, order)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line"><span class="string">    Set the input channel order for e.g. RGB to BGR conversion</span></div><div class="line"><span class="string">    as needed for the reference ImageNet model.</span></div><div class="line"><span class="string">    N.B. this assumes the channels are the first dimension AFTER transpose.</span></div><div class="line"><span class="string">    Parameters</span></div><div class="line"><span class="string">    ----------</span></div><div class="line"><span class="string">    in_ : which input to assign this channel order</span></div><div class="line"><span class="string">    order : the order to take the channels.</span></div><div class="line"><span class="string">        (2,1,0) maps RGB to BGR for example.</span></div><div class="line"><span class="string">    """</span></div><div class="line">    self.__check_input(in_)</div><div class="line">    <span class="keyword">if</span> len(order) != self.inputs[in_][<span class="number">1</span>]:</div><div class="line">        <span class="keyword">raise</span> Exception(<span class="string">'Channel swap needs to have the same number of '</span></div><div class="line">                        <span class="string">'dimensions as the input channels.'</span>)</div><div class="line">    self.channel_swap[in_] = order</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_raw_scale</span><span class="params">(self, in_, scale)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line"><span class="string">    Set the scale of raw features s.t. the input blob = input * scale.</span></div><div class="line"><span class="string">    While Python represents images in [0, 1], certain Caffe models</span></div><div class="line"><span class="string">    like CaffeNet and AlexNet represent images in [0, 255] so the raw_scale</span></div><div class="line"><span class="string">    of these models must be 255.</span></div><div class="line"><span class="string">    Parameters</span></div><div class="line"><span class="string">    ----------</span></div><div class="line"><span class="string">    in_ : which input to assign this scale factor</span></div><div class="line"><span class="string">    scale : scale coefficient</span></div><div class="line"><span class="string">    """</span></div><div class="line">    self.__check_input(in_)</div><div class="line">    self.raw_scale[in_] = scale</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_mean</span><span class="params">(self, in_, mean)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line"><span class="string">    Set the mean to subtract for centering the data.</span></div><div class="line"><span class="string">    Parameters</span></div><div class="line"><span class="string">    ----------</span></div><div class="line"><span class="string">    in_ : which input to assign this mean.</span></div><div class="line"><span class="string">    mean : mean ndarray (input dimensional or broadcastable)</span></div><div class="line"><span class="string">    """</span></div><div class="line">    self.__check_input(in_)</div><div class="line">    ms = mean.shape</div><div class="line">    <span class="keyword">if</span> mean.ndim == <span class="number">1</span>:</div><div class="line">        <span class="comment"># broadcast channels</span></div><div class="line">        <span class="keyword">if</span> ms[<span class="number">0</span>] != self.inputs[in_][<span class="number">1</span>]:</div><div class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'Mean channels incompatible with input.'</span>)</div><div class="line">        mean = mean[:, np.newaxis, np.newaxis]</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="comment"># elementwise mean</span></div><div class="line">        <span class="keyword">if</span> len(ms) == <span class="number">2</span>:</div><div class="line">            ms = (<span class="number">1</span>,) + ms</div><div class="line">        <span class="keyword">if</span> len(ms) != <span class="number">3</span>:</div><div class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'Mean shape invalid'</span>)</div><div class="line">        <span class="keyword">if</span> ms != self.inputs[in_][<span class="number">1</span>:]:</div><div class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'Mean shape incompatible with input shape.'</span>)</div><div class="line">    self.mean[in_] = mean</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_input_scale</span><span class="params">(self, in_, scale)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line"><span class="string">    Set the scale of preprocessed inputs s.t. the blob = blob * scale.</span></div><div class="line"><span class="string">    N.B. input_scale is done AFTER mean subtraction and other preprocessing</span></div><div class="line"><span class="string">    while raw_scale is done BEFORE.</span></div><div class="line"><span class="string">    Parameters</span></div><div class="line"><span class="string">    ----------</span></div><div class="line"><span class="string">    in_ : which input to assign this scale factor</span></div><div class="line"><span class="string">    scale : scale coefficient</span></div><div class="line"><span class="string">    """</span></div><div class="line">    self.__check_input(in_)</div><div class="line">    self.input_scale[in_] = scale</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Caffe/" rel="tag"># Caffe</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/09/PyCaffe-的一些-Demo/" rel="next" title="PyCaffe 的一些 Demo">
+                <i class="fa fa-chevron-left"></i> PyCaffe 的一些 Demo
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/10/Caffe-io-oversample-的使用/" rel="prev" title="Caffe io oversample 的使用">
+                Caffe io oversample 的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">Ocean</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Caffe-io-Transformer"><span class="nav-number">1.</span> <span class="nav-text">Caffe.io.Transformer</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ocean</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
