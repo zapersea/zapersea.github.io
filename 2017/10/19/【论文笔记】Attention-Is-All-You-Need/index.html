@@ -53,7 +53,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Leetcode," />
+  <meta name="keywords" content="Attention Paper," />
 
 
 
@@ -69,20 +69,23 @@
 
 
 
-<meta name="description" content="本渣渣解法首先把root push近stack里，之后只要stack不为空就进入循环。首先定义pre来表示我们之前访问的节点，这个作用是用来判断我们应不应该pop出当前节点。当前节点为stack.peek()获得的节点，如果这个节点之前没有访问过，我们依次push 右子节点和左子节点，这样做是保证左子结点在栈顶(24 - 29行)。如果是叶节点或者是第二次访问的话，就pop()出来，并且加入结果">
-<meta name="keywords" content="Leetcode">
+<meta name="description" content="摘抄就不写了，有很多现成的可以参考，这里挑一些点写一下自己的理解。 整体结构如下 Scaled Dot-Product Attentionpaper中说主要提出了两种attention，Scaled Dot-Product和 Multi-Head 。其中scaled这个就是基本的点乘attention，区别在于它加了一个对维度的scale。  之所以对点乘值除以一个根号dk，作者是说当Q和K的维度">
+<meta name="keywords" content="Attention Paper">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode 145 Binary Tree Postorder Traversal">
-<meta property="og:url" content="http://yoursite.com/2017/09/24/145-Binary-Tree-Postorder-Traversal/index.html">
+<meta property="og:title" content="【论文笔记】Attention Is All You Need">
+<meta property="og:url" content="http://yoursite.com/2017/10/19/【论文笔记】Attention-Is-All-You-Need/index.html">
 <meta property="og:site_name" content="April">
-<meta property="og:description" content="本渣渣解法首先把root push近stack里，之后只要stack不为空就进入循环。首先定义pre来表示我们之前访问的节点，这个作用是用来判断我们应不应该pop出当前节点。当前节点为stack.peek()获得的节点，如果这个节点之前没有访问过，我们依次push 右子节点和左子节点，这样做是保证左子结点在栈顶(24 - 29行)。如果是叶节点或者是第二次访问的话，就pop()出来，并且加入结果">
+<meta property="og:description" content="摘抄就不写了，有很多现成的可以参考，这里挑一些点写一下自己的理解。 整体结构如下 Scaled Dot-Product Attentionpaper中说主要提出了两种attention，Scaled Dot-Product和 Multi-Head 。其中scaled这个就是基本的点乘attention，区别在于它加了一个对维度的scale。  之所以对点乘值除以一个根号dk，作者是说当Q和K的维度">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/005CRBrHgw1fam2tkcgf9j30os08i74o.jpg">
-<meta property="og:updated_time" content="2017-09-25T15:11:10.000Z">
+<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/46270443.jpg">
+<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/81012683.jpg">
+<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-15/5755345.jpg">
+<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/94634163.jpg">
+<meta property="og:updated_time" content="2017-10-19T13:59:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode 145 Binary Tree Postorder Traversal">
-<meta name="twitter:description" content="本渣渣解法首先把root push近stack里，之后只要stack不为空就进入循环。首先定义pre来表示我们之前访问的节点，这个作用是用来判断我们应不应该pop出当前节点。当前节点为stack.peek()获得的节点，如果这个节点之前没有访问过，我们依次push 右子节点和左子节点，这样做是保证左子结点在栈顶(24 - 29行)。如果是叶节点或者是第二次访问的话，就pop()出来，并且加入结果">
-<meta name="twitter:image" content="http://ww4.sinaimg.cn/large/005CRBrHgw1fam2tkcgf9j30os08i74o.jpg">
+<meta name="twitter:title" content="【论文笔记】Attention Is All You Need">
+<meta name="twitter:description" content="摘抄就不写了，有很多现成的可以参考，这里挑一些点写一下自己的理解。 整体结构如下 Scaled Dot-Product Attentionpaper中说主要提出了两种attention，Scaled Dot-Product和 Multi-Head 。其中scaled这个就是基本的点乘attention，区别在于它加了一个对维度的scale。  之所以对点乘值除以一个根号dk，作者是说当Q和K的维度">
+<meta name="twitter:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/46270443.jpg">
 
 
 
@@ -112,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/24/145-Binary-Tree-Postorder-Traversal/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/10/19/【论文笔记】Attention-Is-All-You-Need/"/>
 
 
 
 
 
-  <title>Leetcode 145 Binary Tree Postorder Traversal | April</title>
+  <title>【论文笔记】Attention Is All You Need | April</title>
   
 
 
@@ -235,7 +238,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/145-Binary-Tree-Postorder-Traversal/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/19/【论文笔记】Attention-Is-All-You-Need/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="半城秋雨半城月">
@@ -252,7 +255,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Leetcode 145 Binary Tree Postorder Traversal</h1>
+          <h1 class="post-title" itemprop="name headline">【论文笔记】Attention Is All You Need</h1>
         
 
         <div class="post-meta">
@@ -264,8 +267,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-24T23:23:11+08:00">
-                2017-09-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-19T21:49:07+08:00">
+                2017-10-19
               </time>
             
 
@@ -287,8 +290,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OJ/" itemprop="url" rel="index">
-                    <span itemprop="name">OJ</span>
+                  <a href="/categories/水滴石穿/" itemprop="url" rel="index">
+                    <span itemprop="name">水滴石穿</span>
                   </a>
                 </span>
 
@@ -324,10 +327,46 @@
       
 
       
-        <p><img src="http://ww4.sinaimg.cn/large/005CRBrHgw1fam2tkcgf9j30os08i74o.jpg" alt="image"></p>
-<h4 id="本渣渣解法"><a href="#本渣渣解法" class="headerlink" title="本渣渣解法"></a>本渣渣解法</h4><p>首先把root push近stack里，之后只要stack不为空就进入循环。首先定义pre来表示我们之前访问的节点，这个作用是用来判断我们应不应该pop出当前节点。当前节点为stack.peek()获得的节点，如果这个节点之前没有访问过，我们依次push 右子节点和左子节点，这样做是保证左子结点在栈顶(24 - 29行)。如果是叶节点或者是第二次访问的话，就pop()出来，并且加入结果集，pre设置为当前节点((20 - 23行))。</p>
-<p>可以看到我们这样模拟省略了第二次访问节点的情况，第二次的情况是由在栈里左右子节点的相对顺序来模拟的，因为先push右子节点然后左子结点，那么首先会遍历左子树然后才遍历右子树。如果没有左子树或者右子树情况，那么就先遍历另外一个有的子树。这样由于子节点在栈里都在parent的上方，所以一定先访问完子节点再会去访问父节点，保证了算法的正确性。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Definition for binary tree</span></div><div class="line"><span class="comment"> * public class TreeNode &#123;</span></div><div class="line"><span class="comment"> *     int val;</span></div><div class="line"><span class="comment"> *     TreeNode left;</span></div><div class="line"><span class="comment"> *     TreeNode right;</span></div><div class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></div><div class="line"><span class="comment"> * &#125;</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">postorderTraversal</span><span class="params">(TreeNode root)</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</div><div class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>)</div><div class="line">            <span class="keyword">return</span> res;</div><div class="line">        Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> Stack&lt;TreeNode&gt;();</div><div class="line">        TreeNode pre = <span class="keyword">null</span>;</div><div class="line">        stack.push(root);</div><div class="line">        <span class="keyword">while</span>(!stack.isEmpty()) &#123;</div><div class="line">            TreeNode curr = stack.peek();</div><div class="line">            <span class="keyword">if</span> (isLeaf(curr) || (pre != <span class="keyword">null</span> &amp;&amp; (pre == curr.left || pre == curr.right))) &#123;</div><div class="line">                res.add(stack.pop().val);</div><div class="line">                pre = curr;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">if</span> (curr.right != <span class="keyword">null</span>)</div><div class="line">                    stack.push(curr.right);</div><div class="line">                <span class="keyword">if</span> (curr.left != <span class="keyword">null</span>)</div><div class="line">                    stack.push(curr.left);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isLeaf</span><span class="params">(TreeNode node)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> node.left == <span class="keyword">null</span> &amp;&amp; node.right == <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <p>摘抄就不写了，有很多现成的可以参考，这里挑一些点写一下自己的理解。</p>
+<p>整体结构如下<br><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/46270443.jpg" alt=""></p>
+<h4 id="Scaled-Dot-Product-Attention"><a href="#Scaled-Dot-Product-Attention" class="headerlink" title="Scaled Dot-Product Attention"></a>Scaled Dot-Product Attention</h4><p>paper中说主要提出了两种attention，Scaled Dot-Product和 Multi-Head 。其中scaled这个就是基本的点乘attention，区别在于它加了一个对维度的scale。</p>
+<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/81012683.jpg" alt=""></p>
+<p>之所以对点乘值除以一个根号dk，作者是说当Q和K的维度dk太大的时候，点乘的值也变得巨大，这样会使得softmax函数的梯度变得特别特别小。</p>
+<blockquote>
+<p>We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients 4. To counteract this effect, we scale the dot products by 1/sqrt(dk).</p>
+</blockquote>
+<p>对于点乘的函数，我是这么理解的。。。<br><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-15/5755345.jpg" alt=""></p>
+<pre><code>Qi 和 Vi都是k维，所以假设都是 1xk ,Q一共有n个，(K,V)一共有m对
+
+Q dot KT分解为
+[ Q1 ]                       [Q1*K1, Q1*K2...Q1*Km]    [ W1 ]
+[ Q2 ]  dot [ K1,K2...Km] =  [Q2*K1, Q2*K2...Q2*Km]  = [ W2 ] 
+  ...                             ........              ...
+[ Qn ]                       [Qn*K1, Qn*K2...Qn*Km]    [ Wn ]
+
+对应 (n,k)dot(k,m) = (n,m)
+进过softmax之后，每一行代表一个权重信息Wi ,n行代表n个query各自取value时候的权重
+
+
+[ W1 ]       [ V1 ]
+[ W2 ]  dot  [ V2 ]
+ ...          ...
+[ Wn ]       [ Vm ]
+
+对应 (n,m)dot(m,v) = (n,v)
+n行对应n个query，从而每个query最终得到一个weighted的value，还是保持v维
+</code></pre><p>总之，最后每个query有一个weighted value， dv维</p>
+<h4 id="Multi-Head-Attention"><a href="#Multi-Head-Attention" class="headerlink" title="Multi-Head Attention"></a>Multi-Head Attention</h4><p>这里设定的，原始Q,K,V的维度都等于d-model</p>
+<p>基本思想就是分治，将Q，K，V全部分成h等份，每一份(dk=dv=dmodel/h)分别在linear变换后进入一个attention function ，得到的结果concate连接，再进过一个linear变换，得到最终结果。作者说这样的好处是可以充分让encoder-decoder的不同位置，通过不同的linear，体现出更丰富的结果</p>
+<blockquote>
+<p>Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions</p>
+</blockquote>
+<p>函数如下</p>
+<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/94634163.jpg" alt=""></p>
+<p>这里面Q Wi，对应(n, dmodel) dot (dmodel,dk) = (n ,dk)</p>
+<p>就是对Q做第i个linear变换，把它从dmodel维变成dk维,其实就是取Q的第i部分。K和V类似理解就好。</p>
+<p>h份attention 函数parallel进行，每一份得到的结果也是 dv=dmodel/h,concate起来就又是dmodel维度了。</p>
+
       
     </div>
     
@@ -344,7 +383,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+            <a href="/tags/Attention-Paper/" rel="tag"># Attention Paper</a>
           
         </div>
       
@@ -357,8 +396,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/24/Interesting/" rel="next" title="常用算法整理(持续更新)">
-                <i class="fa fa-chevron-left"></i> 常用算法整理(持续更新)
+              <a href="/2017/10/19/【caffe源码学习】l2-normalize-layer/" rel="next" title="【caffe源码学习】l2_normalize_layer">
+                <i class="fa fa-chevron-left"></i> 【caffe源码学习】l2_normalize_layer
               </a>
             
           </div>
@@ -367,8 +406,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/27/Cs344-Problem-Set1/" rel="prev" title="Cs344 Problem Set1">
-                Cs344 Problem Set1 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/10/19/Mac-使用rar和unrar指令/" rel="prev" title="Mac 使用rar和unrar指令">
+                Mac 使用rar和unrar指令 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -502,7 +541,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#本渣渣解法"><span class="nav-number">1.</span> <span class="nav-text">本渣渣解法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Scaled-Dot-Product-Attention"><span class="nav-number">1.</span> <span class="nav-text">Scaled Dot-Product Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-Head-Attention"><span class="nav-number">2.</span> <span class="nav-text">Multi-Head Attention</span></a></li></ol></div>
             
 
           </div>

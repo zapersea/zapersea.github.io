@@ -53,7 +53,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="algorithm," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -69,18 +69,13 @@
 
 
 
-<meta name="description" content="快排不需辅助空间12345678910111213141516void quick_sort(vector&amp;lt;int&amp;gt; &amp;amp;nums, int b, int e)&amp;#123;    if (b &amp;lt; e - 1) &amp;#123;        int lb = b, rb = e - 1;        while (lb &amp;lt; rb) &amp;#123;            w">
-<meta name="keywords" content="algorithm">
-<meta property="og:type" content="article">
-<meta property="og:title" content="常用算法整理(持续更新)">
-<meta property="og:url" content="http://yoursite.com/2017/09/24/Interesting/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="April">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="April">
-<meta property="og:description" content="快排不需辅助空间12345678910111213141516void quick_sort(vector&amp;lt;int&amp;gt; &amp;amp;nums, int b, int e)&amp;#123;    if (b &amp;lt; e - 1) &amp;#123;        int lb = b, rb = e - 1;        while (lb &amp;lt; rb) &amp;#123;            w">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-25T15:12:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="常用算法整理(持续更新)">
-<meta name="twitter:description" content="快排不需辅助空间12345678910111213141516void quick_sort(vector&amp;lt;int&amp;gt; &amp;amp;nums, int b, int e)&amp;#123;    if (b &amp;lt; e - 1) &amp;#123;        int lb = b, rb = e - 1;        while (lb &amp;lt; rb) &amp;#123;            w">
+<meta name="twitter:title" content="April">
 
 
 
@@ -110,13 +105,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/24/Interesting/"/>
+  <link rel="canonical" href="http://yoursite.com/page/2/"/>
 
 
 
 
 
-  <title>常用算法整理(持续更新) | April</title>
+  <title>April</title>
   
 
 
@@ -135,7 +130,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -218,9 +214,298 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/27/Cs344-Problem-Set1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="半城秋雨半城月">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="April">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/27/Cs344-Problem-Set1/" itemprop="url">Cs344 Problem Set1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-27T23:34:25+08:00">
+                2017-09-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CUDA/" itemprop="url" rel="index">
+                    <span itemprop="name">CUDA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这个 lesson 1 课后的problem很好理解，就是CUDA 实现图片 RGB 变灰度。</p>
+<p>实现要点就是把图片和每一个 pixel 对应到一个 thread，由于图片大小基本是几百*几百。这里也就不多想，直接将numCols设为blockSize，numRows设为gridSize。</p>
+<p>要注意的是，pixel 在图片中的位置是<code>col+row*numCols</code>而不是<code>col+row*numRows</code> ，这个很容易犯错。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Homework 1</span></div><div class="line"><span class="comment">// Color to Greyscale Conversion</span></div><div class="line"></div><div class="line"><span class="comment">//A common way to represent color images is known as RGBA - the color</span></div><div class="line"><span class="comment">//is specified by how much Red, Green, and Blue is in it.</span></div><div class="line"><span class="comment">//The 'A' stands for Alpha and is used for transparency; it will be</span></div><div class="line"><span class="comment">//ignored in this homework.</span></div><div class="line"></div><div class="line"><span class="comment">//Each channel Red, Blue, Green, and Alpha is represented by one byte.</span></div><div class="line"><span class="comment">//Since we are using one byte for each color there are 256 different</span></div><div class="line"><span class="comment">//possible values for each color.  This means we use 4 bytes per pixel.</span></div><div class="line"></div><div class="line"><span class="comment">//Greyscale images are represented by a single intensity value per pixel</span></div><div class="line"><span class="comment">//which is one byte in size.</span></div><div class="line"></div><div class="line"><span class="comment">//To convert an image from color to grayscale one simple method is to</span></div><div class="line"><span class="comment">//set the intensity to the average of the RGB channels.  But we will</span></div><div class="line"><span class="comment">//use a more sophisticated method that takes into account how the eye </span></div><div class="line"><span class="comment">//perceives color and weights the channels unequally.</span></div><div class="line"></div><div class="line"><span class="comment">//The eye responds most strongly to green followed by red and then blue.</span></div><div class="line"><span class="comment">//The NTSC (National Television System Committee) recommends the following</span></div><div class="line"><span class="comment">//formula for color to greyscale conversion:</span></div><div class="line"></div><div class="line"><span class="comment">//I = .299f * R + .587f * G + .114f * B</span></div><div class="line"></div><div class="line"><span class="comment">//Notice the trailing f's on the numbers which indicate that they are </span></div><div class="line"><span class="comment">//single precision floating point constants and not double precision</span></div><div class="line"><span class="comment">//constants.</span></div><div class="line"></div><div class="line"><span class="comment">//You should fill in the kernel as well as set the block and grid sizes</span></div><div class="line"><span class="comment">//so that the entire image is processed.</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"reference_calc.cpp"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"utils.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"></div><div class="line">__<span class="function">global__ <span class="keyword">void</span> <span class="title">rgba_to_greyscale</span><span class="params">(<span class="keyword">const</span> uchar4* <span class="keyword">const</span> rgbaImage,</span></span></div><div class="line"><span class="function"><span class="params">                       <span class="keyword">unsigned</span> <span class="keyword">char</span>* <span class="keyword">const</span> greyImage,</span></span></div><div class="line"><span class="function"><span class="params">                       <span class="keyword">int</span> numRows, <span class="keyword">int</span> numCols)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">int</span> col = threadIdx.x;</div><div class="line">  <span class="keyword">int</span> row = blockIdx.x;</div><div class="line">  <span class="keyword">int</span> index = col+row*numCols;  <span class="comment">//not  (col+row*numRows)</span></div><div class="line">  uchar4 rgba = rgbaImage[index];</div><div class="line">  <span class="keyword">float</span> re = <span class="number">.299</span>f * rgba.x + <span class="number">.587</span>f * rgba.y + <span class="number">.114</span>f * rgba.z;</div><div class="line">  greyImage[index] = re;</div><div class="line">  <span class="comment">//TODO</span></div><div class="line">  <span class="comment">//Fill in the kernel to convert from color to greyscale</span></div><div class="line">  <span class="comment">//the mapping from components of a uchar4 to RGBA is:</span></div><div class="line">  <span class="comment">// .x -&gt; R ; .y -&gt; G ; .z -&gt; B ; .w -&gt; A</span></div><div class="line">  <span class="comment">//</span></div><div class="line">  <span class="comment">//The output (greyImage) at each pixel should be the result of</span></div><div class="line">  <span class="comment">//applying the formula: output = .299f * R + .587f * G + .114f * B;</span></div><div class="line">  <span class="comment">//Note: We will be ignoring the alpha channel for this conversion</span></div><div class="line"></div><div class="line">  <span class="comment">//First create a mapping from the 2D block and grid locations</span></div><div class="line">  <span class="comment">//to an absolute 2D location in the image, then use that to</span></div><div class="line">  <span class="comment">//calculate a 1D offset</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">your_rgba_to_greyscale</span><span class="params">(<span class="keyword">const</span> uchar4 * <span class="keyword">const</span> h_rgbaImage, uchar4 * <span class="keyword">const</span> d_rgbaImage,</span></span></div><div class="line"><span class="function"><span class="params">                            <span class="keyword">unsigned</span> <span class="keyword">char</span>* <span class="keyword">const</span> d_greyImage, <span class="keyword">size_t</span> numRows, <span class="keyword">size_t</span> numCols)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="comment">//You must fill in the correct sizes for the blockSize and gridSize</span></div><div class="line">  <span class="comment">//currently only one block with one thread is being launched</span></div><div class="line">  <span class="function"><span class="keyword">const</span> dim3 <span class="title">blockSize</span><span class="params">(numCols, <span class="number">1</span>, <span class="number">1</span>)</span></span>;  <span class="comment">//TODO</span></div><div class="line">  <span class="function"><span class="keyword">const</span> dim3 <span class="title">gridSize</span><span class="params">( numRows, <span class="number">1</span>, <span class="number">1</span>)</span></span>;  <span class="comment">//TODO</span></div><div class="line">  rgba_to_greyscale&lt;&lt;&lt;gridSize, blockSize&gt;&gt;&gt;(d_rgbaImage, d_greyImage, numRows, numCols);</div><div class="line">  </div><div class="line">  cudaDeviceSynchronize(); checkCudaErrors(cudaGetLastError());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/145-Binary-Tree-Postorder-Traversal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="半城秋雨半城月">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="April">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/24/145-Binary-Tree-Postorder-Traversal/" itemprop="url">Leetcode 145 Binary Tree Postorder Traversal</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-24T23:23:11+08:00">
+                2017-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OJ/" itemprop="url" rel="index">
+                    <span itemprop="name">OJ</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="http://ww4.sinaimg.cn/large/005CRBrHgw1fam2tkcgf9j30os08i74o.jpg" alt="image"></p>
+<h4 id="本渣渣解法"><a href="#本渣渣解法" class="headerlink" title="本渣渣解法"></a>本渣渣解法</h4><p>首先把root push近stack里，之后只要stack不为空就进入循环。首先定义pre来表示我们之前访问的节点，这个作用是用来判断我们应不应该pop出当前节点。当前节点为stack.peek()获得的节点，如果这个节点之前没有访问过，我们依次push 右子节点和左子节点，这样做是保证左子结点在栈顶(24 - 29行)。如果是叶节点或者是第二次访问的话，就pop()出来，并且加入结果集，pre设置为当前节点((20 - 23行))。</p>
+<p>可以看到我们这样模拟省略了第二次访问节点的情况，第二次的情况是由在栈里左右子节点的相对顺序来模拟的，因为先push右子节点然后左子结点，那么首先会遍历左子树然后才遍历右子树。如果没有左子树或者右子树情况，那么就先遍历另外一个有的子树。这样由于子节点在栈里都在parent的上方，所以一定先访问完子节点再会去访问父节点，保证了算法的正确性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Definition for binary tree</span></div><div class="line"><span class="comment"> * public class TreeNode &#123;</span></div><div class="line"><span class="comment"> *     int val;</span></div><div class="line"><span class="comment"> *     TreeNode left;</span></div><div class="line"><span class="comment"> *     TreeNode right;</span></div><div class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></div><div class="line"><span class="comment"> * &#125;</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">postorderTraversal</span><span class="params">(TreeNode root)</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</div><div class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>)</div><div class="line">            <span class="keyword">return</span> res;</div><div class="line">        Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> Stack&lt;TreeNode&gt;();</div><div class="line">        TreeNode pre = <span class="keyword">null</span>;</div><div class="line">        stack.push(root);</div><div class="line">        <span class="keyword">while</span>(!stack.isEmpty()) &#123;</div><div class="line">            TreeNode curr = stack.peek();</div><div class="line">            <span class="keyword">if</span> (isLeaf(curr) || (pre != <span class="keyword">null</span> &amp;&amp; (pre == curr.left || pre == curr.right))) &#123;</div><div class="line">                res.add(stack.pop().val);</div><div class="line">                pre = curr;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">if</span> (curr.right != <span class="keyword">null</span>)</div><div class="line">                    stack.push(curr.right);</div><div class="line">                <span class="keyword">if</span> (curr.left != <span class="keyword">null</span>)</div><div class="line">                    stack.push(curr.left);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isLeaf</span><span class="params">(TreeNode node)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> node.left == <span class="keyword">null</span> &amp;&amp; node.right == <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
 
   
 
@@ -250,7 +535,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">常用算法整理(持续更新)</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/24/Interesting/" itemprop="url">常用算法整理(持续更新)</a></h1>
         
 
         <div class="post-meta">
@@ -322,7 +609,9 @@
       
 
       
-        <h4 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h4><p>不需辅助空间<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">quick_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;nums, <span class="keyword">int</span> b, <span class="keyword">int</span> e)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">if</span> (b &lt; e - <span class="number">1</span>) &#123;</div><div class="line">        <span class="keyword">int</span> lb = b, rb = e - <span class="number">1</span>;</div><div class="line">        <span class="keyword">while</span> (lb &lt; rb) &#123;</div><div class="line">            <span class="keyword">while</span> (nums[rb] &gt;= nums[b] &amp;&amp; lb &lt; rb)</div><div class="line">                rb--;</div><div class="line">            <span class="keyword">while</span> (nums[lb] &lt;= nums[b] &amp;&amp; lb &lt; rb)</div><div class="line">                lb++;</div><div class="line">            swap(nums[lb], nums[rb]);</div><div class="line">        &#125;</div><div class="line">        swap(nums[b], nums[lb]);</div><div class="line">        quick_sort(nums, b, lb);</div><div class="line">        quick_sort(nums, lb + <span class="number">1</span>, e);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+        
+          
+            <h4 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h4><p>不需辅助空间<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">quick_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;nums, <span class="keyword">int</span> b, <span class="keyword">int</span> e)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">if</span> (b &lt; e - <span class="number">1</span>) &#123;</div><div class="line">        <span class="keyword">int</span> lb = b, rb = e - <span class="number">1</span>;</div><div class="line">        <span class="keyword">while</span> (lb &lt; rb) &#123;</div><div class="line">            <span class="keyword">while</span> (nums[rb] &gt;= nums[b] &amp;&amp; lb &lt; rb)</div><div class="line">                rb--;</div><div class="line">            <span class="keyword">while</span> (nums[lb] &lt;= nums[b] &amp;&amp; lb &lt; rb)</div><div class="line">                lb++;</div><div class="line">            swap(nums[lb], nums[rb]);</div><div class="line">        &#125;</div><div class="line">        swap(nums[b], nums[lb]);</div><div class="line">        quick_sort(nums, b, lb);</div><div class="line">        quick_sort(nums, lb + <span class="number">1</span>, e);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>需要辅助空间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">void quick_sort(vector&lt;int&gt; &amp;nums, int b, int e, vector&lt;int&gt; &amp;temp)</div><div class="line">&#123;</div><div class="line">    int m = (b + e) / 2;</div><div class="line">    if (m != b) &#123;</div><div class="line">        int lb = b, rb = e - 1;</div><div class="line"></div><div class="line">        for (int i = b; i &lt; e; i++) &#123;</div><div class="line">            if (i == m)</div><div class="line">                continue;</div><div class="line">            if (nums[i] &lt; nums[m])</div><div class="line">                temp[lb++] = nums[i];</div><div class="line">            else</div><div class="line">                temp[rb--] = nums[i];</div><div class="line">        &#125;</div><div class="line">        temp[lb] = nums[m];</div><div class="line">        </div><div class="line">        for (int i = b; i &lt; e; i++)</div><div class="line">            nums[i] = temp[i];</div><div class="line">        </div><div class="line">        quick_sort(nums, b, lb, temp);</div><div class="line">        quick_sort(nums, lb + 1, e, temp);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">void heap_sort(vector&lt;int&gt; &amp;nums)</div><div class="line">&#123;</div><div class="line">    int n = nums.size();</div><div class="line">    for (int i = n / 2 - 1; i &gt;= 0; i--) &#123; // build max heap</div><div class="line">        max_heapify(nums, i, nums.size() - 1);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    for (int i = n - 1; i &gt; 0; i--) &#123; // heap sort</div><div class="line">        int temp = nums[i];</div><div class="line">        num[i] = nums[0];</div><div class="line">        num[0] = temp;</div><div class="line">        max_heapify(nums, 0, i);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void max_heapify(vector&lt;int&gt; &amp;nums, int beg, int end)</div><div class="line">&#123;</div><div class="line">    int curr = beg;</div><div class="line">    int child = curr * 2 + 1;</div><div class="line">    while (child &lt; end) &#123;</div><div class="line">        if (child + 1 &lt; end &amp;&amp; nums[child] &lt; nums[child + 1]) &#123;</div><div class="line">            child++;</div><div class="line">        &#125;</div><div class="line">        if (nums[curr] &lt; nums[child]) &#123;</div><div class="line">            int temp = nums[curr];</div><div class="line">            nums[curr] = nums[child];</div><div class="line">            num[child] = temp;</div><div class="line">            curr = child;</div><div class="line">            child = 2 * curr + 1;</div><div class="line">        &#125; else &#123;</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="二分查找-条件-key"><a href="#二分查找-条件-key" class="headerlink" title="二分查找 条件 =key"></a>二分查找 条件 =key</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">int binarySearch(vector&lt;int&gt;&amp; a,int key) &#123;</div><div class="line">    int lo = 0;</div><div class="line">    int hi = a.size() - 1;</div><div class="line">    while (lo &lt;= hi) &#123;</div><div class="line">        // Key is in a[lo..hi] or not present.</div><div class="line">        int mid = lo + (hi - lo) / 2;</div><div class="line">        if      (key &lt; a[mid]) hi = mid - 1;</div><div class="line">        else if (key &gt; a[mid]) lo = mid + 1;</div><div class="line">        else return mid;</div><div class="line">    &#125;</div><div class="line">    return -1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -337,6 +626,8 @@
 4.标记访问，boolean[][] visit
 5.标记回溯，尤其要注意回溯的位置!
 </code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] dir=&#123;&#123;-<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">0</span>,-<span class="number">1</span>&#125;,&#123;<span class="number">0</span>,<span class="number">1</span>&#125;&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">bfs</span><span class="params">(<span class="keyword">char</span>[][] board,<span class="keyword">int</span> i,<span class="keyword">int</span> j,String word,<span class="keyword">int</span> k,<span class="keyword">boolean</span>[][] visit)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(k==word.length())</div><div class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">	<span class="keyword">boolean</span> flag=<span class="keyword">false</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> m=<span class="number">0</span>;m&lt;<span class="number">4</span>;m++)&#123;  <span class="comment">//四周搜索</span></div><div class="line">		<span class="keyword">int</span> ix=i+dir[m][<span class="number">0</span>];</div><div class="line">		<span class="keyword">int</span> jx=j+dir[m][<span class="number">1</span>];</div><div class="line">		<span class="keyword">if</span>(ix&gt;=<span class="number">0</span> &amp;&amp; ix&lt;board.length &amp;&amp; jx&gt;=<span class="number">0</span> &amp;&amp; jx&lt;board[<span class="number">0</span>].length)&#123; <span class="comment">//边界判断</span></div><div class="line">			<span class="keyword">if</span>(board[ix][jx]==word.charAt(k) &amp;&amp; visit[ix][jx]==<span class="keyword">false</span>)&#123; <span class="comment">//比较</span></div><div class="line">				visit[ix][jx]=<span class="keyword">true</span>;	  <span class="comment">//标记！！！</span></div><div class="line">				flag=bfs(board,ix,jx,word,k+<span class="number">1</span>,visit);</div><div class="line">				<span class="keyword">if</span>(flag==<span class="keyword">false</span>)</div><div class="line">					visit[ix][jx]=<span class="keyword">false</span>;  <span class="comment">//回溯！！！</span></div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(flag)</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> flag;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">exist</span><span class="params">(<span class="keyword">char</span>[][] board, String word)</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span>(word.length()&gt;board.length*board[<span class="number">0</span>].length) <span class="comment">//长度超出，肯定false</span></div><div class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">	<span class="keyword">boolean</span> flag=<span class="keyword">false</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;board.length;i++)&#123;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;board[<span class="number">0</span>].length;j++)&#123;</div><div class="line">			<span class="keyword">if</span>(board[i][j]==word.charAt(<span class="number">0</span>))&#123;</div><div class="line">				<span class="keyword">boolean</span>[][] visit=<span class="keyword">new</span> <span class="keyword">boolean</span>[board.length][board[<span class="number">0</span>].length];</div><div class="line">				visit[i][j]=<span class="keyword">true</span>;</div><div class="line">				flag=bfs(board,i,j,word,<span class="number">1</span>,visit);</div><div class="line">				<span class="keyword">if</span>(flag)</div><div class="line">					<span class="keyword">break</span>;</div><div class="line">				<span class="keyword">else</span></div><div class="line">					visit[i][j]=<span class="keyword">false</span>; <span class="comment">//这里也要回溯</span></div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(flag)</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> flag;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
+        
       
     </div>
     
@@ -351,36 +642,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/algorithm/" rel="tag"># algorithm</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/24/145-Binary-Tree-Postorder-Traversal/" rel="prev" title="Leetcode 145 Binary Tree Postorder Traversal">
-                Leetcode 145 Binary Tree Postorder Traversal <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -390,11 +659,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
@@ -402,10 +674,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-  </div>
-
 
         </div>
         
@@ -426,17 +694,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
             <p class="site-author-name" itemprop="name">半城秋雨半城月</p>
@@ -497,22 +756,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#快排"><span class="nav-number">1.</span> <span class="nav-text">快排</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆排序"><span class="nav-number">2.</span> <span class="nav-text">堆排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二分查找-条件-key"><span class="nav-number">3.</span> <span class="nav-text">二分查找 条件 =key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二分查找-条件-gt-key"><span class="nav-number">4.</span> <span class="nav-text">二分查找 条件 >= key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二分查找-最左相等值"><span class="nav-number">5.</span> <span class="nav-text">二分查找 最左相等值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二分查找-最右相等值"><span class="nav-number">6.</span> <span class="nav-text">二分查找 最右相等值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#走格子类BFS问题"><span class="nav-number">7.</span> <span class="nav-text">走格子类BFS问题</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
