@@ -80,7 +80,7 @@
 <meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/60056469.jpg">
 <meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80339585.jpg">
 <meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/70282483.jpg">
-<meta property="og:updated_time" content="2017-10-19T14:14:55.000Z">
+<meta property="og:updated_time" content="2017-10-19T14:16:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【论文笔记】Multi-group Shifting Attention Network">
 <meta name="twitter:description" content="来自百度的ActivityNet Challenge 2017冠军论文 Revisiting the Effectiveness of Off-the-shelf Temporal Modeling Approaches for Large-scale Video Classification。由于只有短短的4页，内容很不详细，自己分析了一部分。 主要提出了一个Multi-group Shifti">
@@ -340,7 +340,7 @@
 <blockquote>
 <p>An attention function can be considered as mapping a set of input features to a single output, where the input and output are both matrices that concatenate feature vectors</p>
 </blockquote>
-<p>文中说X和attention函数的输出都是vector拼接起来的矩阵。而我们推理的X是不同帧RGB经过网络的得到feature拼接起来的。一个帧提供一个<code>C*H*W)</code>的vector，N个帧拼接正好得到了一个<code>N * (C*H*W)</code>的X矩阵。</p>
+<p>文中说X和attention函数的输出都是vector拼接起来的矩阵。而我们推理的X是不同帧RGB经过网络的得到feature拼接起来的。一个帧提供一个<code>C*H*W</code>长的vector，N个帧拼接正好得到了一个<code>N * (C*H*W)</code>的X矩阵。</p>
 <p>那么输出也是一个拼接的矩阵怎么解释？还是回到原文</p>
 <blockquote>
 <p>First, we extract multiple feature sets from the video. For each feature set Xi, we apply Ni different shifting attentions, which we call one attention group, and then we con- catenate the outputs.</p>
