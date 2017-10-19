@@ -81,7 +81,7 @@
 <meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/23341806.jpg">
 <meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80278970.jpg">
 <meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/59837972.jpg">
-<meta property="og:updated_time" content="2017-10-19T14:01:10.000Z">
+<meta property="og:updated_time" content="2017-10-19T14:11:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【caffe源码学习】l2_normalize_layer">
 <meta name="twitter:description" content="参考的l2_normalize_layer来自Compact Bilinear Pooling  先看一下hpp文件 l2_normalize_layer.hppC++ hpp文件高亮支持一般，这里我就索性用截图了  除了常规的cpu，gpu前向后向传播，还定义了一个叫squared_的Blob，用来存bottom的平方。top和bottom的blob都只有一个，类型名是L2Normalize。">
@@ -337,24 +337,24 @@
 <h4 id="l2-normalize-layer"><a href="#l2-normalize-layer" class="headerlink" title="l2_normalize_layer"></a>l2_normalize_layer</h4><h4 id="Reshape"><a href="#Reshape" class="headerlink" title="Reshape"></a>Reshape</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/23341806.jpg" alt=""></p>
 <p>把top 和 squared这两reshape成bottom的shape，[num,channel,height,width] 对应N <em> C</em> H * W</p>
 <h4 id="Forward-cpu"><a href="#Forward-cpu" class="headerlink" title="Forward_cpu"></a>Forward_cpu</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80278970.jpg" alt=""></p>
-<p>取bottom的数据到bottom_data, top和squared的数据都设为mutable待求。n是batch size N，d是dim，按照caffe的惯例还是等于C <em> H </em> W 。</p>
+<p>取bottom的数据到bottom_data, top和squared的数据都设为mutable待求。n是batch size N，d是dim，按照caffe的惯例还是等于<code>C * H * W</code>。</p>
 <p>令squared等于bottom对应element值的平方，然后进入一个n循环，以样本为单位进行操作。每次循环取squared的样本下面长为d的全部元素和(即bottom的平方和)，存到normsqr。然后每个bottom的每个元素除以normsqr的根号，赋值给top。</p>
 <p>从而实现L2前向，<code>top[i] = bottom[i] / sqrt ( sum(bottom[j]*bottom[j]) )</code></p>
 <p>用到的函数</p>
 <ul>
 <li><p><code>void caffe_sqr&lt;float&gt;(const int n, const float* a, float* y)</code>     </p>
-<p>  对应element_wise操作， y = a^2 ，注意是平方不是平方根。这里是 squared_data = bottom_data * bottom_data</p>
+<p>  对应element_wise操作， y = a^2 ，注意是平方不是平方根。这里是 <code>squared_data = bottom_data * bottom_data</code></p>
 </li>
 <li><p><code>float caffe_cpu_asum&lt;float&gt;(const int n, const float* x)</code></p>
-<p>  计算 vector x 的所有element的绝对值之和。这是是取squared_data的长度为C <em> H </em> W 的元素和。</p>
+<p>  计算 vector x 的所有element的绝对值之和。这是是取squared_data的长度为<code>C * H * W</code>的元素和。</p>
 </li>
 <li><p><code>void caffe_cpu_scale&lt;float&gt;(const int n, const float alpha, const float *x,float* y)</code></p>
-<p> 计算y = alpha<em>x ，在这里 top_data = pow(normsqr,-0.5)</em>bottom_data = bottom_data/pow(normsqr,0.5)，而pow(normsqr,0.5)可以理解为bottom的平方和开根号。</p>
+<p> 计算<code>y = alpha*x</code>，在这里 <code>top_data = pow(normsqr,-0.5)*bottom_data = bottom_data/pow(normsqr,0.5)</code>，而pow(normsqr,0.5)可以理解为bottom的平方和开根号。</p>
 </li>
 </ul>
 <h4 id="Backward-cpu"><a href="#Backward-cpu" class="headerlink" title="Backward_cpu"></a>Backward_cpu</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/59837972.jpg" alt=""></p>
 <p>L2梯度的推导没怎么找到。。。</p>
-<p>取top的data和diff，取bottom的data，bottom的diff设为mutable待求。n等于batch size N，d等于dim为C<em> H </em> W。</p>
+<p>取top的data和diff，取bottom的data，bottom的diff设为mutable待求。n等于batch size N，d等于dim为<code>C* H * W</code>。</p>
 <p>接下来还是n循环分样本做。</p>
 <pre><code>a = top_data dot top_diff  ,内积得到一个数值
 bottom_diff = a * top_data
@@ -364,10 +364,10 @@ bottom_diff = pow(a,-0.5) * bottom_diff
             = bottom_diff / pow(a,0.5)
 </code></pre><p>用到的函数</p>
 <ul>
-<li><p>Dtype caffe_cpu_dot(const int n, const Dtype<em> x, const Dtype</em> y)</p>
+<li><p><code>Dtype caffe_cpu_dot(const int n, const Dtype* x, const Dtype* y)</code></p>
 <p>  返回x与y的内积，这里是top_data*top_diff ，返回一个数值</p>
 </li>
-<li><p>void caffe_sub<float>(const int n, const float<em> a, const float</em> b,<br>  float* y)</float></p>
+<li><p><code>void caffe_sub&lt;float&gt;(const int n, const float* a, const float* b, float* y)</code></p>
 <p>  实现element-wise的减 , y[i] = a[i] - b[i] 。这里是 bottom_diff = top_diff - bottom_diff。</p>
 </li>
 </ul>

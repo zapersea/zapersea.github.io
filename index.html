@@ -666,24 +666,24 @@ n行对应n个query，从而每个query最终得到一个weighted的value，还�
 <h4 id="l2-normalize-layer"><a href="#l2-normalize-layer" class="headerlink" title="l2_normalize_layer"></a>l2_normalize_layer</h4><h4 id="Reshape"><a href="#Reshape" class="headerlink" title="Reshape"></a>Reshape</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/23341806.jpg" alt=""></p>
 <p>把top 和 squared这两reshape成bottom的shape，[num,channel,height,width] 对应N <em> C</em> H * W</p>
 <h4 id="Forward-cpu"><a href="#Forward-cpu" class="headerlink" title="Forward_cpu"></a>Forward_cpu</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80278970.jpg" alt=""></p>
-<p>取bottom的数据到bottom_data, top和squared的数据都设为mutable待求。n是batch size N，d是dim，按照caffe的惯例还是等于C <em> H </em> W 。</p>
+<p>取bottom的数据到bottom_data, top和squared的数据都设为mutable待求。n是batch size N，d是dim，按照caffe的惯例还是等于<code>C * H * W</code>。</p>
 <p>令squared等于bottom对应element值的平方，然后进入一个n循环，以样本为单位进行操作。每次循环取squared的样本下面长为d的全部元素和(即bottom的平方和)，存到normsqr。然后每个bottom的每个元素除以normsqr的根号，赋值给top。</p>
 <p>从而实现L2前向，<code>top[i] = bottom[i] / sqrt ( sum(bottom[j]*bottom[j]) )</code></p>
 <p>用到的函数</p>
 <ul>
 <li><p><code>void caffe_sqr&lt;float&gt;(const int n, const float* a, float* y)</code>     </p>
-<p>  对应element_wise操作， y = a^2 ，注意是平方不是平方根。这里是 squared_data = bottom_data * bottom_data</p>
+<p>  对应element_wise操作， y = a^2 ，注意是平方不是平方根。这里是 <code>squared_data = bottom_data * bottom_data</code></p>
 </li>
 <li><p><code>float caffe_cpu_asum&lt;float&gt;(const int n, const float* x)</code></p>
-<p>  计算 vector x 的所有element的绝对值之和。这是是取squared_data的长度为C <em> H </em> W 的元素和。</p>
+<p>  计算 vector x 的所有element的绝对值之和。这是是取squared_data的长度为<code>C * H * W</code>的元素和。</p>
 </li>
 <li><p><code>void caffe_cpu_scale&lt;float&gt;(const int n, const float alpha, const float *x,float* y)</code></p>
-<p> 计算y = alpha<em>x ，在这里 top_data = pow(normsqr,-0.5)</em>bottom_data = bottom_data/pow(normsqr,0.5)，而pow(normsqr,0.5)可以理解为bottom的平方和开根号。</p>
+<p> 计算<code>y = alpha*x</code>，在这里 <code>top_data = pow(normsqr,-0.5)*bottom_data = bottom_data/pow(normsqr,0.5)</code>，而pow(normsqr,0.5)可以理解为bottom的平方和开根号。</p>
 </li>
 </ul>
 <h4 id="Backward-cpu"><a href="#Backward-cpu" class="headerlink" title="Backward_cpu"></a>Backward_cpu</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/59837972.jpg" alt=""></p>
 <p>L2梯度的推导没怎么找到。。。</p>
-<p>取top的data和diff，取bottom的data，bottom的diff设为mutable待求。n等于batch size N，d等于dim为C<em> H </em> W。</p>
+<p>取top的data和diff，取bottom的data，bottom的diff设为mutable待求。n等于batch size N，d等于dim为<code>C* H * W</code>。</p>
 <p>接下来还是n循环分样本做。</p>
 <pre><code>a = top_data dot top_diff  ,内积得到一个数值
 bottom_diff = a * top_data
@@ -693,10 +693,10 @@ bottom_diff = pow(a,-0.5) * bottom_diff
             = bottom_diff / pow(a,0.5)
 </code></pre><p>用到的函数</p>
 <ul>
-<li><p>Dtype caffe_cpu_dot(const int n, const Dtype<em> x, const Dtype</em> y)</p>
+<li><p><code>Dtype caffe_cpu_dot(const int n, const Dtype* x, const Dtype* y)</code></p>
 <p>  返回x与y的内积，这里是top_data*top_diff ，返回一个数值</p>
 </li>
-<li><p>void caffe_sub<float>(const int n, const float<em> a, const float</em> b,<br>  float* y)</float></p>
+<li><p><code>void caffe_sub&lt;float&gt;(const int n, const float* a, const float* b, float* y)</code></p>
 <p>  实现element-wise的减 , y[i] = a[i] - b[i] 。这里是 bottom_diff = top_diff - bottom_diff。</p>
 </li>
 </ul>
@@ -851,7 +851,7 @@ bottom_diff = pow(a,-0.5) * bottom_diff
 <p>整个结构输入有三部分，RGB，Flow和Audio，分别经过shifting attention最后<br>三份输出concate作为整个视频的representation，进行常规的FC，softmax分类。</p>
 <p>下面的SATT就是shifting attention结构的公式。输入X和输出都是矩阵。</p>
 <p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/70282483.jpg" alt=""></p>
-<p>首先理解X 。比如，我们可以在整个视频中选取10个时间节点，extract对应的RGB，FLow和Audio特征，以RGB为例我们可以得到10张C0 <em> H0 </em> W0的图像，经过一个神经网络得到10 <em> C </em> H <em> W 的future, 然后将后面3维concate成一个vector，最终得到`10 </em> (C<em>H</em>W)<code>的二维矩阵。上面结构图的深蓝色矩形合起来就是这个</code>10 <em> (C</em>H<em>W)<code>矩阵，也是公式中的</code>X<code>，每一个矩形单独是一个</code>C</em>H*W`的vector，来自原始输入的一帧。(以上皆为个人推断，原文未说明X)</p>
+<p>首先理解X 。比如，我们可以在整个视频中选取10个时间节点，extract对应的RGB，FLow和Audio特征，以RGB为例我们可以得到10张<code>C0 * H0 * W0</code>的图像，经过一个神经网络得到<code>10 * C * H * W</code>的future, 然后将后面3维concate成一个vector，最终得到<code>10 * (C*H*W)</code>的二维矩阵。上面结构图的深蓝色矩形合起来就是这个<code>10 * (C*H*W)</code>矩阵，也是公式中的<code>X</code>，每一个矩形单独是一个<code>C*H*W</code>的vector，来自原始输入的一帧。(以上皆为个人推断，原文未说明X)</p>
 <p>文中有一句原话是</p>
 <blockquote>
 <p>An attention function can be considered as mapping a set of input features to a single output, where the input and output are both matrices that concatenate feature vectors</p>
@@ -863,7 +863,7 @@ bottom_diff = pow(a,-0.5) * bottom_diff
 </blockquote>
 <p>RGB，Flow和Audio分别对应X1,X2,X3,其各自含有Ni帧。比如RGB有10帧(N1=10)，那么就将这10帧对应的X输入到10个不同的SATT(x)，每个SATT(x)的输出是<code>1*(C*H*W)</code>的vector(后面会证明),那么10个不同的输出concate起来呢？没错，是<code>10*(C*H*W)</code>的矩阵，这也印证了原文说的输入输出都是矩阵。需要注意，一个SATT不是attention函数，Ni个合起来才是一个完整的attention函数。</p>
 <p>接下来我们分析SATT函数。假设RGB有N帧 ，为表示方便我们把<code>(C*H*W)</code>记作d。</p>
-<p>输入X是 N <em> d ，w是一个vector，而且要和X的转置做内积，所以肯定是 1 </em> d 。内积的结果是一个1 <em> N的vector，超参数α是个值不影响维度，再进过softmax，得到的λ也是一个1 </em> N的vector，对应不同帧的weight。<strong>注意，在这以及能看出来，百度这个shifting attention的本质就是给视频不同位置(帧)的RGB(光流，声音)加权重，找关键帧，而不再考虑时序信息。</strong> 然后因为λX是内积，得到1 <em> d的vector，所以最终SATT的输出就是一个1 </em> d的vector。按照之前分析的，RGB的X一共输入到N个不同的SATT，N个输出拼接起来就又是N <em> d的矩阵了。然后将这个矩阵concate成 1</em>（N*d）的vector，进行L2 normalize。RGB，Flow和Audio各自normalize完的输出再concate成一个vector，作为整个vedio的representation ，接下来输入到FC，softmax进行分类。</p>
+<p>输入X是 <code>N * d</code> ，w是一个vector，而且要和X的转置做内积，所以肯定是 <code>1 * d</code> 。内积的结果是一个<code>1 * N</code>的vector，超参数α是个值不影响维度，再进过softmax，得到的λ也是一个<code>1 * N</code>的vector，对应不同帧的weight。<strong>注意，在这以及能看出来，百度这个shifting attention的本质就是给视频不同位置(帧)的RGB(光流，声音)加权重，找关键帧，而不再考虑时序信息。</strong> 然后因为λX是内积，得到<code>1 * d</code>的vector，所以最终SATT的输出就是一个<code>1 * d</code>的vector。按照之前分析的，RGB的X一共输入到N个不同的SATT，N个输出拼接起来就又是<code>N * d</code>的矩阵了。然后将这个矩阵concate成 <code>1*（N*d）</code>的vector，进行L2 normalize。RGB，Flow和Audio各自normalize完的输出再concate成一个vector，作为整个vedio的representation ，接下来输入到FC，softmax进行分类。</p>
 <p>以上也是<code>Multi-group Shifting Attention Network</code>运行的全部流程。</p>
 
           
