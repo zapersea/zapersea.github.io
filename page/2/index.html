@@ -424,151 +424,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/27/Cs344-Problem-Set1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="半城秋雨半城月">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="牧羊人小站">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/27/Cs344-Problem-Set1/" itemprop="url">Cs344 Problem Set1</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-27T23:34:25+08:00">
-                2017-09-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CUDA/" itemprop="url" rel="index">
-                    <span itemprop="name">CUDA</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这个 lesson 1 课后的problem很好理解，就是CUDA 实现图片 RGB 变灰度。</p>
-<p>实现要点就是把图片和每一个 pixel 对应到一个 thread，由于图片大小基本是几百*几百。这里也就不多想，直接将numCols设为blockSize，numRows设为gridSize。</p>
-<p>要注意的是，pixel 在图片中的位置是<code>col+row*numCols</code>而不是<code>col+row*numRows</code> ，这个很容易犯错。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Homework 1</span></div><div class="line"><span class="comment">// Color to Greyscale Conversion</span></div><div class="line"></div><div class="line"><span class="comment">//A common way to represent color images is known as RGBA - the color</span></div><div class="line"><span class="comment">//is specified by how much Red, Green, and Blue is in it.</span></div><div class="line"><span class="comment">//The 'A' stands for Alpha and is used for transparency; it will be</span></div><div class="line"><span class="comment">//ignored in this homework.</span></div><div class="line"></div><div class="line"><span class="comment">//Each channel Red, Blue, Green, and Alpha is represented by one byte.</span></div><div class="line"><span class="comment">//Since we are using one byte for each color there are 256 different</span></div><div class="line"><span class="comment">//possible values for each color.  This means we use 4 bytes per pixel.</span></div><div class="line"></div><div class="line"><span class="comment">//Greyscale images are represented by a single intensity value per pixel</span></div><div class="line"><span class="comment">//which is one byte in size.</span></div><div class="line"></div><div class="line"><span class="comment">//To convert an image from color to grayscale one simple method is to</span></div><div class="line"><span class="comment">//set the intensity to the average of the RGB channels.  But we will</span></div><div class="line"><span class="comment">//use a more sophisticated method that takes into account how the eye </span></div><div class="line"><span class="comment">//perceives color and weights the channels unequally.</span></div><div class="line"></div><div class="line"><span class="comment">//The eye responds most strongly to green followed by red and then blue.</span></div><div class="line"><span class="comment">//The NTSC (National Television System Committee) recommends the following</span></div><div class="line"><span class="comment">//formula for color to greyscale conversion:</span></div><div class="line"></div><div class="line"><span class="comment">//I = .299f * R + .587f * G + .114f * B</span></div><div class="line"></div><div class="line"><span class="comment">//Notice the trailing f's on the numbers which indicate that they are </span></div><div class="line"><span class="comment">//single precision floating point constants and not double precision</span></div><div class="line"><span class="comment">//constants.</span></div><div class="line"></div><div class="line"><span class="comment">//You should fill in the kernel as well as set the block and grid sizes</span></div><div class="line"><span class="comment">//so that the entire image is processed.</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"reference_calc.cpp"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"utils.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"></div><div class="line">__<span class="function">global__ <span class="keyword">void</span> <span class="title">rgba_to_greyscale</span><span class="params">(<span class="keyword">const</span> uchar4* <span class="keyword">const</span> rgbaImage,</span></span></div><div class="line"><span class="function"><span class="params">                       <span class="keyword">unsigned</span> <span class="keyword">char</span>* <span class="keyword">const</span> greyImage,</span></span></div><div class="line"><span class="function"><span class="params">                       <span class="keyword">int</span> numRows, <span class="keyword">int</span> numCols)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">int</span> col = threadIdx.x;</div><div class="line">  <span class="keyword">int</span> row = blockIdx.x;</div><div class="line">  <span class="keyword">int</span> index = col+row*numCols;  <span class="comment">//not  (col+row*numRows)</span></div><div class="line">  uchar4 rgba = rgbaImage[index];</div><div class="line">  <span class="keyword">float</span> re = <span class="number">.299</span>f * rgba.x + <span class="number">.587</span>f * rgba.y + <span class="number">.114</span>f * rgba.z;</div><div class="line">  greyImage[index] = re;</div><div class="line">  <span class="comment">//TODO</span></div><div class="line">  <span class="comment">//Fill in the kernel to convert from color to greyscale</span></div><div class="line">  <span class="comment">//the mapping from components of a uchar4 to RGBA is:</span></div><div class="line">  <span class="comment">// .x -&gt; R ; .y -&gt; G ; .z -&gt; B ; .w -&gt; A</span></div><div class="line">  <span class="comment">//</span></div><div class="line">  <span class="comment">//The output (greyImage) at each pixel should be the result of</span></div><div class="line">  <span class="comment">//applying the formula: output = .299f * R + .587f * G + .114f * B;</span></div><div class="line">  <span class="comment">//Note: We will be ignoring the alpha channel for this conversion</span></div><div class="line"></div><div class="line">  <span class="comment">//First create a mapping from the 2D block and grid locations</span></div><div class="line">  <span class="comment">//to an absolute 2D location in the image, then use that to</span></div><div class="line">  <span class="comment">//calculate a 1D offset</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">your_rgba_to_greyscale</span><span class="params">(<span class="keyword">const</span> uchar4 * <span class="keyword">const</span> h_rgbaImage, uchar4 * <span class="keyword">const</span> d_rgbaImage,</span></span></div><div class="line"><span class="function"><span class="params">                            <span class="keyword">unsigned</span> <span class="keyword">char</span>* <span class="keyword">const</span> d_greyImage, <span class="keyword">size_t</span> numRows, <span class="keyword">size_t</span> numCols)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="comment">//You must fill in the correct sizes for the blockSize and gridSize</span></div><div class="line">  <span class="comment">//currently only one block with one thread is being launched</span></div><div class="line">  <span class="function"><span class="keyword">const</span> dim3 <span class="title">blockSize</span><span class="params">(numCols, <span class="number">1</span>, <span class="number">1</span>)</span></span>;  <span class="comment">//TODO</span></div><div class="line">  <span class="function"><span class="keyword">const</span> dim3 <span class="title">gridSize</span><span class="params">( numRows, <span class="number">1</span>, <span class="number">1</span>)</span></span>;  <span class="comment">//TODO</span></div><div class="line">  rgba_to_greyscale&lt;&lt;&lt;gridSize, blockSize&gt;&gt;&gt;(d_rgbaImage, d_greyImage, numRows, numCols);</div><div class="line">  </div><div class="line">  cudaDeviceSynchronize(); checkCudaErrors(cudaGetLastError());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/145-Binary-Tree-Postorder-Traversal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -904,7 +759,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -915,7 +770,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -926,7 +781,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
