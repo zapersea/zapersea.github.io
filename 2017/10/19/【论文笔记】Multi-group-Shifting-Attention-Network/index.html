@@ -77,14 +77,14 @@
 <meta property="og:site_name" content="牧羊人小站">
 <meta property="og:description" content="来自百度的ActivityNet Challenge 2017冠军论文 Revisiting the Effectiveness of Off-the-shelf Temporal Modeling Approaches for Large-scale Video Classification。由于只有短短的4页，内容很不详细，自己分析了一部分。 主要提出了一个Multi-group Shifti">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/60056469.jpg">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80339585.jpg">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/70282483.jpg">
-<meta property="og:updated_time" content="2017-10-19T14:16:34.000Z">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjidz7nvj311u0cen0c.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjj4gdicj314w0i4aej.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjjgc2mij30s40dqjt0.jpg">
+<meta property="og:updated_time" content="2019-04-30T04:20:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【论文笔记】Multi-group Shifting Attention Network">
 <meta name="twitter:description" content="来自百度的ActivityNet Challenge 2017冠军论文 Revisiting the Effectiveness of Off-the-shelf Temporal Modeling Approaches for Large-scale Video Classification。由于只有短短的4页，内容很不详细，自己分析了一部分。 主要提出了一个Multi-group Shifti">
-<meta name="twitter:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/60056469.jpg">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjidz7nvj311u0cen0c.jpg">
 
 
 
@@ -328,13 +328,13 @@
       
         <p>来自百度的ActivityNet Challenge 2017冠军论文 <code>Revisiting the Effectiveness of Off-the-shelf Temporal Modeling Approaches for Large-scale Video Classification</code>。由于只有短短的4页，内容很不详细，自己分析了一部分。</p>
 <p>主要提出了一个<code>Multi-group Shifting Attention Network</code>模型用于视频检测，在Kinetics数据集上效果很好。</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/60056469.jpg" alt=""></p>
+<p><img src="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjidz7nvj311u0cen0c.jpg" alt="60056469"></p>
 <p>Multi-group Shifting Attention Network 的结构如下，其中最重要的便是shifting attention部分</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80339585.jpg" alt=""></p>
+<p><img src="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjj4gdicj314w0i4aej.jpg" alt="80339585"></p>
 <p>下面是我的个人理解。</p>
 <p>整个结构输入有三部分，RGB，Flow和Audio，分别经过shifting attention最后<br>三份输出concate作为整个视频的representation，进行常规的FC，softmax分类。</p>
 <p>下面的SATT就是shifting attention结构的公式。输入X和输出都是矩阵。</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/70282483.jpg" alt=""></p>
+<p><img src="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjjgc2mij30s40dqjt0.jpg" alt="70282483"></p>
 <p>首先理解X 。比如，我们可以在整个视频中选取10个时间节点，extract对应的RGB，FLow和Audio特征，以RGB为例我们可以得到10张<code>C0 * H0 * W0</code>的图像，经过一个神经网络得到<code>10 * C * H * W</code>的future, 然后将后面3维concate成一个vector，最终得到<code>10 * (C*H*W)</code>的二维矩阵。上面结构图的深蓝色矩形合起来就是这个<code>10 * (C*H*W)</code>矩阵，也是公式中的<code>X</code>，每一个矩形单独是一个<code>C*H*W</code>的vector，来自原始输入的一帧。(以上皆为个人推断，原文未说明X)</p>
 <p>文中有一句原话是</p>
 <blockquote>

@@ -77,15 +77,15 @@
 <meta property="og:site_name" content="牧羊人小站">
 <meta property="og:description" content="参考的l2_normalize_layer来自Compact Bilinear Pooling  先看一下hpp文件 l2_normalize_layer.hppC++ hpp文件高亮支持一般，这里我就索性用截图了  除了常规的cpu，gpu前向后向传播，还定义了一个叫squared_的Blob，用来存bottom的平方。top和bottom的blob都只有一个，类型名是L2Normalize。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/51568918.jpg">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/23341806.jpg">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80278970.jpg">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/59837972.jpg">
-<meta property="og:updated_time" content="2017-10-19T14:14:56.000Z">
+<meta property="og:image" content="http://ws4.sinaimg.cn/large/005CRBrHly1g2kjfhy2hbj311e13aait.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjg663jpj30yq08utas.jpg">
+<meta property="og:image" content="http://ws4.sinaimg.cn/large/005CRBrHly1g2kjghpefzj30x00egtcc.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjgxd83ij30ys0hawiz.jpg">
+<meta property="og:updated_time" content="2019-04-30T04:18:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【caffe源码学习】l2_normalize_layer">
 <meta name="twitter:description" content="参考的l2_normalize_layer来自Compact Bilinear Pooling  先看一下hpp文件 l2_normalize_layer.hppC++ hpp文件高亮支持一般，这里我就索性用截图了  除了常规的cpu，gpu前向后向传播，还定义了一个叫squared_的Blob，用来存bottom的平方。top和bottom的blob都只有一个，类型名是L2Normalize。">
-<meta name="twitter:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/51568918.jpg">
+<meta name="twitter:image" content="http://ws4.sinaimg.cn/large/005CRBrHly1g2kjfhy2hbj311e13aait.jpg">
 
 
 
@@ -332,11 +332,11 @@
 </blockquote>
 <p>先看一下hpp文件</p>
 <h4 id="l2-normalize-layer-hpp"><a href="#l2-normalize-layer-hpp" class="headerlink" title="l2_normalize_layer.hpp"></a>l2_normalize_layer.hpp</h4><p>C++ hpp文件高亮支持一般，这里我就索性用截图了</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/51568918.jpg" alt=""></p>
+<p><img src="http://ws4.sinaimg.cn/large/005CRBrHly1g2kjfhy2hbj311e13aait.jpg" alt="51568918"></p>
 <p>除了常规的cpu，gpu前向后向传播，还定义了一个叫<code>squared_</code>的Blob，用来存bottom的平方。top和bottom的blob都只有一个，类型名是<code>L2Normalize</code>。</p>
-<h4 id="l2-normalize-layer"><a href="#l2-normalize-layer" class="headerlink" title="l2_normalize_layer"></a>l2_normalize_layer</h4><h4 id="Reshape"><a href="#Reshape" class="headerlink" title="Reshape"></a>Reshape</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/23341806.jpg" alt=""></p>
+<h4 id="l2-normalize-layer"><a href="#l2-normalize-layer" class="headerlink" title="l2_normalize_layer"></a>l2_normalize_layer</h4><h4 id="Reshape"><a href="#Reshape" class="headerlink" title="Reshape"></a>Reshape</h4><p><img src="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjg663jpj30yq08utas.jpg" alt="23341806"></p>
 <p>把top 和 squared这两reshape成bottom的shape，[num,channel,height,width] 对应N <em> C</em> H * W</p>
-<h4 id="Forward-cpu"><a href="#Forward-cpu" class="headerlink" title="Forward_cpu"></a>Forward_cpu</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80278970.jpg" alt=""></p>
+<h4 id="Forward-cpu"><a href="#Forward-cpu" class="headerlink" title="Forward_cpu"></a>Forward_cpu</h4><p><img src="http://ws4.sinaimg.cn/large/005CRBrHly1g2kjghpefzj30x00egtcc.jpg" alt="80278970"></p>
 <p>取bottom的数据到bottom_data, top和squared的数据都设为mutable待求。n是batch size N，d是dim，按照caffe的惯例还是等于<code>C * H * W</code>。</p>
 <p>令squared等于bottom对应element值的平方，然后进入一个n循环，以样本为单位进行操作。每次循环取squared的样本下面长为d的全部元素和(即bottom的平方和)，存到normsqr。然后每个bottom的每个元素除以normsqr的根号，赋值给top。</p>
 <p>从而实现L2前向，<code>top[i] = bottom[i] / sqrt ( sum(bottom[j]*bottom[j]) )</code></p>
@@ -352,7 +352,7 @@
 <p> 计算<code>y = alpha*x</code>，在这里 <code>top_data = pow(normsqr,-0.5)*bottom_data = bottom_data/pow(normsqr,0.5)</code>，而pow(normsqr,0.5)可以理解为bottom的平方和开根号。</p>
 </li>
 </ul>
-<h4 id="Backward-cpu"><a href="#Backward-cpu" class="headerlink" title="Backward_cpu"></a>Backward_cpu</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/59837972.jpg" alt=""></p>
+<h4 id="Backward-cpu"><a href="#Backward-cpu" class="headerlink" title="Backward_cpu"></a>Backward_cpu</h4><p><img src="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjgxd83ij30ys0hawiz.jpg" alt="59837972"></p>
 <p>L2梯度的推导没怎么找到。。。</p>
 <p>取top的data和diff，取bottom的data，bottom的diff设为mutable待求。n等于batch size N，d等于dim为<code>C* H * W</code>。</p>
 <p>接下来还是n循环分样本做。</p>

@@ -625,14 +625,14 @@
         
           
             <p>摘抄就不写了，有很多现成的可以参考，这里挑一些点写一下自己的理解。</p>
-<p>整体结构如下<br><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/46270443.jpg" alt=""></p>
+<p>整体结构如下<br><img src="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjb8i9dqj31cs0xudmj.jpg" alt="46270443"></p>
 <h4 id="Scaled-Dot-Product-Attention"><a href="#Scaled-Dot-Product-Attention" class="headerlink" title="Scaled Dot-Product Attention"></a>Scaled Dot-Product Attention</h4><p>paper中说主要提出了两种attention，Scaled Dot-Product和 Multi-Head 。其中scaled这个就是基本的点乘attention，区别在于它加了一个对维度的scale。</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/81012683.jpg" alt=""></p>
+<p><img src="http://wx4.sinaimg.cn/large/005CRBrHly1g2kjbh0lmzj31ai0iqgpy.jpg" alt="81012683"></p>
 <p>之所以对点乘值除以一个根号dk，作者是说当Q和K的维度dk太大的时候，点乘的值也变得巨大，这样会使得softmax函数的梯度变得特别特别小。</p>
 <blockquote>
 <p>We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients 4. To counteract this effect, we scale the dot products by 1/sqrt(dk).</p>
 </blockquote>
-<p>对于点乘的函数，我是这么理解的。。。<br><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-15/5755345.jpg" alt=""></p>
+<p>对于点乘的函数，我是这么理解的。。。<br><img src="http://wx4.sinaimg.cn/large/005CRBrHly1g2kjcnq7r8j312603eglv.jpg" alt="5755345"></p>
 <pre><code>Qi 和 Vi都是k维，所以假设都是 1xk ,Q一共有n个，(K,V)一共有m对
 
 Q dot KT分解为
@@ -659,7 +659,7 @@ n行对应n个query，从而每个query最终得到一个weighted的value，还�
 <p>Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions</p>
 </blockquote>
 <p>函数如下</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/94634163.jpg" alt=""></p>
+<p><img src="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjdrtmitj316o048js2.jpg" alt="94634163"></p>
 <p>这里面Q Wi，对应(n, dmodel) dot (dmodel,dk) = (n ,dk)</p>
 <p>就是对Q做第i个linear变换，把它从dmodel维变成dk维,其实就是取Q的第i部分。K和V类似理解就好。</p>
 <p>h份attention 函数parallel进行，每一份得到的结果也是 dv=dmodel/h,concate起来就又是dmodel维度了。</p>
@@ -809,11 +809,11 @@ n行对应n个query，从而每个query最终得到一个weighted的value，还�
 </blockquote>
 <p>先看一下hpp文件</p>
 <h4 id="l2-normalize-layer-hpp"><a href="#l2-normalize-layer-hpp" class="headerlink" title="l2_normalize_layer.hpp"></a>l2_normalize_layer.hpp</h4><p>C++ hpp文件高亮支持一般，这里我就索性用截图了</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/51568918.jpg" alt=""></p>
+<p><img src="http://ws4.sinaimg.cn/large/005CRBrHly1g2kjfhy2hbj311e13aait.jpg" alt="51568918"></p>
 <p>除了常规的cpu，gpu前向后向传播，还定义了一个叫<code>squared_</code>的Blob，用来存bottom的平方。top和bottom的blob都只有一个，类型名是<code>L2Normalize</code>。</p>
-<h4 id="l2-normalize-layer"><a href="#l2-normalize-layer" class="headerlink" title="l2_normalize_layer"></a>l2_normalize_layer</h4><h4 id="Reshape"><a href="#Reshape" class="headerlink" title="Reshape"></a>Reshape</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/23341806.jpg" alt=""></p>
+<h4 id="l2-normalize-layer"><a href="#l2-normalize-layer" class="headerlink" title="l2_normalize_layer"></a>l2_normalize_layer</h4><h4 id="Reshape"><a href="#Reshape" class="headerlink" title="Reshape"></a>Reshape</h4><p><img src="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjg663jpj30yq08utas.jpg" alt="23341806"></p>
 <p>把top 和 squared这两reshape成bottom的shape，[num,channel,height,width] 对应N <em> C</em> H * W</p>
-<h4 id="Forward-cpu"><a href="#Forward-cpu" class="headerlink" title="Forward_cpu"></a>Forward_cpu</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80278970.jpg" alt=""></p>
+<h4 id="Forward-cpu"><a href="#Forward-cpu" class="headerlink" title="Forward_cpu"></a>Forward_cpu</h4><p><img src="http://ws4.sinaimg.cn/large/005CRBrHly1g2kjghpefzj30x00egtcc.jpg" alt="80278970"></p>
 <p>取bottom的数据到bottom_data, top和squared的数据都设为mutable待求。n是batch size N，d是dim，按照caffe的惯例还是等于<code>C * H * W</code>。</p>
 <p>令squared等于bottom对应element值的平方，然后进入一个n循环，以样本为单位进行操作。每次循环取squared的样本下面长为d的全部元素和(即bottom的平方和)，存到normsqr。然后每个bottom的每个元素除以normsqr的根号，赋值给top。</p>
 <p>从而实现L2前向，<code>top[i] = bottom[i] / sqrt ( sum(bottom[j]*bottom[j]) )</code></p>
@@ -829,7 +829,7 @@ n行对应n个query，从而每个query最终得到一个weighted的value，还�
 <p> 计算<code>y = alpha*x</code>，在这里 <code>top_data = pow(normsqr,-0.5)*bottom_data = bottom_data/pow(normsqr,0.5)</code>，而pow(normsqr,0.5)可以理解为bottom的平方和开根号。</p>
 </li>
 </ul>
-<h4 id="Backward-cpu"><a href="#Backward-cpu" class="headerlink" title="Backward_cpu"></a>Backward_cpu</h4><p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/59837972.jpg" alt=""></p>
+<h4 id="Backward-cpu"><a href="#Backward-cpu" class="headerlink" title="Backward_cpu"></a>Backward_cpu</h4><p><img src="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjgxd83ij30ys0hawiz.jpg" alt="59837972"></p>
 <p>L2梯度的推导没怎么找到。。。</p>
 <p>取top的data和diff，取bottom的data，bottom的diff设为mutable待求。n等于batch size N，d等于dim为<code>C* H * W</code>。</p>
 <p>接下来还是n循环分样本做。</p>
@@ -992,13 +992,13 @@ bottom_diff = pow(a,-0.5) * bottom_diff
           
             <p>来自百度的ActivityNet Challenge 2017冠军论文 <code>Revisiting the Effectiveness of Off-the-shelf Temporal Modeling Approaches for Large-scale Video Classification</code>。由于只有短短的4页，内容很不详细，自己分析了一部分。</p>
 <p>主要提出了一个<code>Multi-group Shifting Attention Network</code>模型用于视频检测，在Kinetics数据集上效果很好。</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/60056469.jpg" alt=""></p>
+<p><img src="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjidz7nvj311u0cen0c.jpg" alt="60056469"></p>
 <p>Multi-group Shifting Attention Network 的结构如下，其中最重要的便是shifting attention部分</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/80339585.jpg" alt=""></p>
+<p><img src="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjj4gdicj314w0i4aej.jpg" alt="80339585"></p>
 <p>下面是我的个人理解。</p>
 <p>整个结构输入有三部分，RGB，Flow和Audio，分别经过shifting attention最后<br>三份输出concate作为整个视频的representation，进行常规的FC，softmax分类。</p>
 <p>下面的SATT就是shifting attention结构的公式。输入X和输出都是矩阵。</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-19/70282483.jpg" alt=""></p>
+<p><img src="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjjgc2mij30s40dqjt0.jpg" alt="70282483"></p>
 <p>首先理解X 。比如，我们可以在整个视频中选取10个时间节点，extract对应的RGB，FLow和Audio特征，以RGB为例我们可以得到10张<code>C0 * H0 * W0</code>的图像，经过一个神经网络得到<code>10 * C * H * W</code>的future, 然后将后面3维concate成一个vector，最终得到<code>10 * (C*H*W)</code>的二维矩阵。上面结构图的深蓝色矩形合起来就是这个<code>10 * (C*H*W)</code>矩阵，也是公式中的<code>X</code>，每一个矩形单独是一个<code>C*H*W</code>的vector，来自原始输入的一帧。(以上皆为个人推断，原文未说明X)</p>
 <p>文中有一句原话是</p>
 <blockquote>
@@ -1158,7 +1158,7 @@ bottom_diff = pow(a,-0.5) * bottom_diff
 <li>进入caffe根目录 ，执行</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make pycaffe</div></pre></td></tr></table></figure>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-10/86047808.jpg" alt=""></p>
+<p><img src="http://wx4.sinaimg.cn/large/005CRBrHly1g2kjlej3i8j30wm0dwq5n.jpg" alt="86047808"></p>
 <ul>
 <li>导入环境变量</li>
 </ul>
@@ -1170,7 +1170,7 @@ bottom_diff = pow(a,-0.5) * bottom_diff
 <ul>
 <li>查看是否配置成功</li>
 </ul>
-<p>没什么问题<br><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-10/5273757.jpg" alt=""></p>
+<p>没什么问题<br><img src="http://ws4.sinaimg.cn/large/005CRBrHly1g2kjll5zrfj30w005gmxx.jpg" alt="5273757"></p>
 
           
         
@@ -1330,7 +1330,7 @@ bottom_diff = pow(a,-0.5) * bottom_diff
 <p>其中，scipy库中的 misc 可以将np.array存储为jpeg，png等格式的图片，基本用法是</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> misc</div><div class="line">misc.imsave(<span class="string">'lena_new_sz.png'</span>, lena_array)</div></pre></td></tr></table></figure>
 <p>最后是生成的sample 效果</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-10/43831055.jpg" alt="image"></p>
+<p><img src="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjmrn4bjj30xa0qq4dp.jpg" alt="43831055"></p>
 
           
         

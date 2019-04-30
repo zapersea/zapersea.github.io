@@ -77,15 +77,15 @@
 <meta property="og:site_name" content="牧羊人小站">
 <meta property="og:description" content="摘抄就不写了，有很多现成的可以参考，这里挑一些点写一下自己的理解。 整体结构如下 Scaled Dot-Product Attentionpaper中说主要提出了两种attention，Scaled Dot-Product和 Multi-Head 。其中scaled这个就是基本的点乘attention，区别在于它加了一个对维度的scale。  之所以对点乘值除以一个根号dk，作者是说当Q和K的维度">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/46270443.jpg">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/81012683.jpg">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-15/5755345.jpg">
-<meta property="og:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/94634163.jpg">
-<meta property="og:updated_time" content="2017-10-19T14:14:34.000Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjb8i9dqj31cs0xudmj.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/large/005CRBrHly1g2kjbh0lmzj31ai0iqgpy.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/large/005CRBrHly1g2kjcnq7r8j312603eglv.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjdrtmitj316o048js2.jpg">
+<meta property="og:updated_time" content="2019-04-30T04:15:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【论文笔记】Attention Is All You Need">
 <meta name="twitter:description" content="摘抄就不写了，有很多现成的可以参考，这里挑一些点写一下自己的理解。 整体结构如下 Scaled Dot-Product Attentionpaper中说主要提出了两种attention，Scaled Dot-Product和 Multi-Head 。其中scaled这个就是基本的点乘attention，区别在于它加了一个对维度的scale。  之所以对点乘值除以一个根号dk，作者是说当Q和K的维度">
-<meta name="twitter:image" content="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/46270443.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjb8i9dqj31cs0xudmj.jpg">
 
 
 
@@ -328,14 +328,14 @@
 
       
         <p>摘抄就不写了，有很多现成的可以参考，这里挑一些点写一下自己的理解。</p>
-<p>整体结构如下<br><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/46270443.jpg" alt=""></p>
+<p>整体结构如下<br><img src="http://ws1.sinaimg.cn/large/005CRBrHly1g2kjb8i9dqj31cs0xudmj.jpg" alt="46270443"></p>
 <h4 id="Scaled-Dot-Product-Attention"><a href="#Scaled-Dot-Product-Attention" class="headerlink" title="Scaled Dot-Product Attention"></a>Scaled Dot-Product Attention</h4><p>paper中说主要提出了两种attention，Scaled Dot-Product和 Multi-Head 。其中scaled这个就是基本的点乘attention，区别在于它加了一个对维度的scale。</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/81012683.jpg" alt=""></p>
+<p><img src="http://wx4.sinaimg.cn/large/005CRBrHly1g2kjbh0lmzj31ai0iqgpy.jpg" alt="81012683"></p>
 <p>之所以对点乘值除以一个根号dk，作者是说当Q和K的维度dk太大的时候，点乘的值也变得巨大，这样会使得softmax函数的梯度变得特别特别小。</p>
 <blockquote>
 <p>We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients 4. To counteract this effect, we scale the dot products by 1/sqrt(dk).</p>
 </blockquote>
-<p>对于点乘的函数，我是这么理解的。。。<br><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-15/5755345.jpg" alt=""></p>
+<p>对于点乘的函数，我是这么理解的。。。<br><img src="http://wx4.sinaimg.cn/large/005CRBrHly1g2kjcnq7r8j312603eglv.jpg" alt="5755345"></p>
 <pre><code>Qi 和 Vi都是k维，所以假设都是 1xk ,Q一共有n个，(K,V)一共有m对
 
 Q dot KT分解为
@@ -362,7 +362,7 @@ n行对应n个query，从而每个query最终得到一个weighted的value，还�
 <p>Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions</p>
 </blockquote>
 <p>函数如下</p>
-<p><img src="http://o7f7k8xtl.bkt.clouddn.com/17-10-16/94634163.jpg" alt=""></p>
+<p><img src="http://wx2.sinaimg.cn/large/005CRBrHly1g2kjdrtmitj316o048js2.jpg" alt="94634163"></p>
 <p>这里面Q Wi，对应(n, dmodel) dot (dmodel,dk) = (n ,dk)</p>
 <p>就是对Q做第i个linear变换，把它从dmodel维变成dk维,其实就是取Q的第i部分。K和V类似理解就好。</p>
 <p>h份attention 函数parallel进行，每一份得到的结果也是 dv=dmodel/h,concate起来就又是dmodel维度了。</p>
